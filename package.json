@@ -1,0 +1,26 @@
+{
+  "name": "react-express-base",
+  "version": "1.0.0",
+  "description": "Just a base I can use to start new projects from",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js --ignore client",
+    "develop": "concurrently \"cd server && nodemon\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BGrowcott/react-express-base.git"
+  },
+  "author": "Ben Growcott",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BGrowcott/react-express-base/issues"
+  },
+  "homepage": "https://github.com/BGrowcott/react-express-base#readme",
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
