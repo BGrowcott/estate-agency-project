@@ -5,7 +5,8 @@ const Home = () => {
   
     return (
       <main>
-        Hello World
+        <div className='d-flex justify-content-around align-items-center'>
+        </div>
       </main>
     );
   };
