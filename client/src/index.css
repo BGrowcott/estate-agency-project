@@ -8,3 +8,51 @@
 .w-40 {
   width: 40%;
 }
+
+header {
+  z-index: 1030;
+}
+
+.background-image {
+  background-image: url();
+}
+
+.shadow-custom {
+  box-shadow: 0px 0px 5px black;
+}
+
+.box-fade-dark {
+  background-color: #212529ef;
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.bg-dark-fade {
+  background-color: #212529ef;
+}
+
+.bg-light-fade {
+  background-color: #ffffffde;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+main {
+  padding-top: 50px;
+}
+
+.card-title-top {
+  position: relative;
+  bottom: 1rem;
+}
+
+.caption-custom {
+  position: relative;
+  bottom: 1.5rem;
+}
+
+.h-0 {
+  height: 0;
+}

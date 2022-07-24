@@ -1,0 +1,40 @@
+/* Nav List */
+.nav-list-custom {
+  list-style: none;
+  height: 100%;
+}
+
+.nav-list-custom-item {
+  height: 100%;
+}
+
+.nav-list-custom-item a {
+  color: white;
+}
+
+.nav-list-custom-item:hover {
+  transition: all 1s;
+  background-color: white;
+}
+
+.nav-list-custom-item a:hover {
+  transition: all 1s;
+  color: black !important;
+  font-size: medium;
+}
+
+.slide-down {
+  animation-duration: 1s;
+  overflow: hidden;
+  animation-name: slideDown;
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0px;
+  }
+
+  to {
+    max-height: 250px;
+  }
+}

@@ -14,6 +14,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import ModalSignup from "./components/modals/ModalSignup";
 import ModalLogin from "./components/modals/ModalLogin";
+import Content from "./pages/Content";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -47,6 +48,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/content" element={<Content />} />
           </Routes>
           <Footer />
           <ModalLogin/>

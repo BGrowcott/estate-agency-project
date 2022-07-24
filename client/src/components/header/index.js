@@ -1,43 +1,36 @@
-import React from "react";
-import Auth from "../../utils/auth";
-import Button from 'react-bootstrap/Button';
-import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from '../../utils/actions';
+import React, { useState } from "react";
 import { useStoreContext } from "../../utils/GlobalState";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import "./style.css";
+import NavList from "../navList/NavList";
 
 const Header = () => {
-  const [state, dispatch] = useStoreContext();
+  const navArray = [
+    { text: "Home", href: "/", faIcon: "house" },
+    { text: "Content", href: "/content" },
+    { text: "Features", href: "#" },
+    { text: "Get in Touch", href: "#" },
+  ];
 
-  function toggleModalLogin(e){
-    dispatch({type: SHOW_MODAL_LOGIN})
-  }
+  const [menuDisplay, setMenuDisplay] = useState(false);
 
-  function toggleModalSignup(e){
-    dispatch({type: SHOW_MODAL_SIGNUP})
+  function toggleMenuDisplay() {
+    setMenuDisplay(!menuDisplay);
   }
 
   return (
-    <header className="bg-dark text-white p-1">
-      <div className="d-flex justify-content-between">
-        <h1>Website Title</h1>
-        {Auth.loggedIn() ? (
-          <div className="d-flex align-items-center">
-            <div className="me-3">
-              Welcome back, {Auth.getProfile().data.username}
-            </div>
-            <button onClick={Auth.logout} className="btn btn-secondary btn-sm">
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="d-flex align-items-center justify-content-around">
-            <Button className="btn-sm m-1" variant="primary" onClick={toggleModalLogin}>
-              Login
-            </Button>
-            <Button className="btn-sm m-1" variant="primary" onClick={toggleModalSignup}>
-              SignUp
-            </Button>
-          </div>
-        )}
+    <header className="bg-dark-fade text-white p-1 pt-md-0 pb-md-0 shadow-custom position-fixed w-100">
+      <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-between text-center">
+        <div className="d-flex justify-content-between align-items-center text-center">
+          <h1 className="h2 m-0">Website Title</h1>
+          <FontAwesomeIcon
+            className={`d-block d-md-none fs-2 pointer text-center`}
+            icon={solid("bars")}
+            onClick={toggleMenuDisplay}
+          />
+        </div>
+        <NavList navArray={navArray} menuDisplay={menuDisplay} />
       </div>
     </header>
   );
