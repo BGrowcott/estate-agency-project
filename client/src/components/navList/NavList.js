@@ -72,7 +72,7 @@ const NavList = ({ navArray, menuDisplay }) => {
       >
         {navArray.map((item, index) => (
           <li
-            className="ms-3 me-3 d-flex align-items-center nav-list-custom-item"
+            className="ms-3 me-3 mb-2 mb-md-0 ps-2 pe-2 d-flex align-items-center nav-list-custom-item"
             key={index}
           >
             <a className="p-1 text-decoration-none" href={item.href}>

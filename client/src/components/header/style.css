@@ -15,12 +15,13 @@
 .nav-list-custom-item:hover {
   transition: all 1s;
   background-color: white;
+  box-shadow: 0px 0px 5px white;
 }
 
 .nav-list-custom-item a:hover {
   transition: all 1s;
   color: black !important;
-  font-size: medium;
+  font-size: large;
 }
 
 .slide-down {

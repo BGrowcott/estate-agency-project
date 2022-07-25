@@ -7,7 +7,7 @@ const resolvers = {
     base: async () => {
       return Base.find({});
     },
-    singleBase: async (_parent, { _id }) => {
+    singleBase: async (parent, { _id }) => {
       return Base.findById(_id);
     },
     users: async () => {
@@ -31,7 +31,7 @@ const resolvers = {
       return { token, user };
     },
 
-    login: async (parent, { email, password }) => {
+    login: async (parent, { email, password }, context) => {
       const user = await User.findOne({ email });
 
       if (!user) {
@@ -45,7 +45,6 @@ const resolvers = {
       }
 
       const token = signToken(user);
-
       return { token, user };
     },
 
