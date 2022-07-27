@@ -9,18 +9,18 @@
 }
 
 .nav-list-custom-item a {
-  color: white;
+  color: black;
 }
 
 .nav-list-custom-item:hover {
   transition: all 1s;
-  background-color: white;
-  box-shadow: 0px 0px 5px white;
+  background-color: black;
+  box-shadow: 0px 0px 5px black;
 }
 
-.nav-list-custom-item a:hover {
+.nav-list-custom-item:hover a {
   transition: all 1s;
-  color: black !important;
+  color: white !important;
   font-size: large;
 }
 
@@ -38,4 +38,10 @@
   to {
     max-height: 250px;
   }
+}
+
+/* Logo */
+
+.main-logo {
+  width: 100px;
 }

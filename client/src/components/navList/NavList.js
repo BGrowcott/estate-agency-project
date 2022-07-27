@@ -5,6 +5,7 @@ import Auth from "../../utils/auth";
 import Button from "react-bootstrap/Button";
 import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../utils/actions";
 import { useStoreContext } from "../../utils/GlobalState";
+import { Link } from "react-router-dom";
 
 const NavList = ({ navArray, menuDisplay }) => {
   const [state, dispatch] = useStoreContext();
@@ -18,8 +19,13 @@ const NavList = ({ navArray, menuDisplay }) => {
   }
 
   function faIcon(item) {
-    if (item.faIcon === "house") {
-      return <FontAwesomeIcon className="me-1" icon={solid("house")} />;
+    if (item.faIcon) {
+      switch (item.faIcon) {
+        case "house":
+          return <FontAwesomeIcon className="me-1" icon={solid("house")} />;
+        case "building":
+          return <FontAwesomeIcon className="me-1" icon={solid("building")} />;
+      }
     }
   }
 
@@ -72,13 +78,15 @@ const NavList = ({ navArray, menuDisplay }) => {
       >
         {navArray.map((item, index) => (
           <li
-            className="ms-3 me-3 mb-2 mb-md-0 ps-2 pe-2 d-flex align-items-center nav-list-custom-item"
+            className="ms-2 me-2 mb-2 mb-md-0 ps-2 pe-2 d-flex align-items-center nav-list-custom-item"
             key={index}
           >
-            <a className="p-1 text-decoration-none" href={item.href}>
-              {faIcon(item)}
-              {item.text}
-            </a>
+            <Link to={item.href}>
+              <a className="p-1 text-decoration-none">
+                {faIcon(item)}
+                {item.text}
+              </a>
+            </Link>
           </li>
         ))}
         {loginDisplay()}
