@@ -82,10 +82,10 @@ const NavList = ({ navArray, menuDisplay }) => {
             key={index}
           >
             <Link to={item.href}>
-              <a className="p-1 text-decoration-none">
+              <div className="p-1 text-decoration-none">
                 {faIcon(item)}
                 {item.text}
-              </a>
+              </div>
             </Link>
           </li>
         ))}

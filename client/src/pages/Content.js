@@ -23,10 +23,7 @@ const Content = () => {
   return (
     <main>
       {products.map((product, index) => (
-        <>
           <ProductCard content={product} key={index} />
-          <hr />
-        </>
       ))}
     </main>
   );
