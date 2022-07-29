@@ -1,5 +1,5 @@
 {
-  "name": "react-express-base",
+  "name": "estate-agency-project",
   "version": "1.0.0",
   "description": "Just a base I can use to start new projects from",
   "main": "index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BGrowcott/react-express-base.git"
+    "url": "git+https://github.com/BGrowcott/estate-agency-project.git"
   },
   "author": "Ben Growcott",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BGrowcott/react-express-base/issues"
+    "url": "https://github.com/BGrowcott/estate-agency-project/issues"
   },
-  "homepage": "https://github.com/BGrowcott/react-express-base#readme",
+  "homepage": "https://github.com/BGrowcott/estate-agency-project#readme",
   "devDependencies": {
     "concurrently": "^7.2.2"
   }

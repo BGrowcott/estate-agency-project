@@ -1,6 +1,9 @@
 const { Base, User } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
+const dotenv = require("dotenv");
+dotenv.config();
+const stripe = require("stripe")(process.env.STRIPE_SK);
 
 const resolvers = {
   Query: {
@@ -21,6 +24,46 @@ const resolvers = {
         return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
+    },
+    checkout: async (parent, args, context) => {
+      const url = new URL(context.headers.referer).origin;
+      // const order = new Order({ products: "testProduct" });
+      const line_items = [];
+
+      // const { products } = await order.populate('products');
+      // let product;
+      // let price;
+      // try {
+      //   product = await stripe.products.create({
+      //     name: "testProduct",
+      //     description: "testy",
+      //   });
+      // } catch (err) {
+      //   console.log(err);
+      // }
+      // try {
+      //   price = await stripe.prices.create({
+      //     product: product,
+      //     unit_amount: 100,
+      //     // currency: "usd",
+      //   });
+      // } catch (err) {
+      //   console.log(err);
+      // }
+
+      try {
+        const session = await stripe.checkout.sessions.create({
+          // payment_method_types: ["card"],
+          line_items: [{ name: 'testProduct', description:"this is a description", amount: 1000, quantity: 1, currency: "cny" }],
+          mode: "payment",
+          success_url: `${url}/`,
+          cancel_url: `${url}/`,
+        });
+
+        return { session: session.id };
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 
