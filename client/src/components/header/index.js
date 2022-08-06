@@ -3,13 +3,12 @@ import logoMain from "../../images/logos/logo-secondary.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./style.css";
-import NavList from "../navList/NavList";
+import NavList from "./navList/NavList";
 
 const Header = () => {
   const navArray = [
     { text: "Home", href: "/", faIcon: "house" },
     { text: "Content", href: "/content", faIcon: "building" },
-    { text: "Features", href: "#" },
     { text: "Get in Touch", href: "#" },
   ];
 

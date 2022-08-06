@@ -1,29 +1,17 @@
 import React from "react";
 import ProductCard from "../components/cards/ProductCard";
 import placeholder from "../images/placeholder.jpg";
+import { useQuery } from "@apollo/client";
+import { QUERY_PROPERTIES } from "../utils/queries";
 
 const Content = () => {
-  const products = [
-    {
-      title: "Title",
-      image: placeholder,
-      imageDescription: "Image Description",
-      details: "Details",
-      information: "Informations",
-    },
-    {
-      title: "Title",
-      image: placeholder,
-      imageDescription: "Image Description",
-      details: "Details",
-      information: "Informations",
-    },
-  ];
+
+  const { loading, data: propertyData } = useQuery(QUERY_PROPERTIES);
 
   return (
     <main>
-      {products.map((product, index) => (
-          <ProductCard content={product} key={index} />
+      {loading ? <div>loading</div> : propertyData?.properties.map((property, index) => (
+          <ProductCard content={property} key={property._id} />
       ))}
     </main>
   );

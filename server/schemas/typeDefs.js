@@ -8,6 +8,17 @@ const typeDefs = gql`
     password: String
   }
 
+  type Property {
+    _id: ID
+    title: String
+    description: String
+    address: String
+    price: Int
+    imageUrl: [String]
+    bedroom: Int
+    bathroom: Int
+  }
+
   type Base {
     _id: ID
     name: String!
@@ -26,6 +37,8 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     me: User
+    property: Property
+    properties: [Property]
     base: [Base]
     singleBase(_id: ID!): Base
     checkout: Checkout
@@ -35,6 +48,7 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     createBase(name: String!): Base
+    createProperty(title: String!, description: String!, address: String! price: Int!, bedroom: Int, bathroom: Int): Property
   }
 `;
 

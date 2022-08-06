@@ -8,7 +8,9 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { StoreProvider } from "./utils/GlobalState";
+import Auth from "./utils/auth";
 
+import Admin from "./pages/Admin";
 import Home from "./pages/Home";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -40,7 +42,19 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+let user;
+
 function App() {
+
+  if (Auth.loggedIn()){
+    user = Auth.getProfile();
+  }
+  function adminPage() {
+    if (Auth.loggedIn() && user.data.role === "admin") {
+      return <Route path="/admin" element={<Admin />} />;
+    }
+  }
+
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -49,10 +63,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/content" element={<Content />} />
+            {adminPage()}
+            <Route path="*" element={<Home />} />
           </Routes>
           <Footer />
-          <ModalLogin/>
-          <ModalSignup/>
+          <ModalLogin />
+          <ModalSignup />
         </StoreProvider>
       </Router>
     </ApolloProvider>

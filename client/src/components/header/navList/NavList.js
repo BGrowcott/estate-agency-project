@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
-import Auth from "../../utils/auth";
+import Auth from "../../../utils/auth";
 import Button from "react-bootstrap/Button";
-import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../utils/actions";
-import { useStoreContext } from "../../utils/GlobalState";
+import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../../utils/actions";
+import { useStoreContext } from "../../../utils/GlobalState";
 import { Link } from "react-router-dom";
 
+let user;
+
 const NavList = ({ navArray, menuDisplay }) => {
+
+  if (Auth.loggedIn()){
+    user = Auth.getProfile()
+  };  
+
   const [state, dispatch] = useStoreContext();
 
   function toggleModalLogin(e) {
@@ -62,6 +69,22 @@ const NavList = ({ navArray, menuDisplay }) => {
     }
   }
 
+  function adminDisplay() {
+    if (Auth.loggedIn() && user.data.role === "admin") {
+      return (
+        <li
+          className="ms-2 me-2 mb-2 mb-md-0 ps-2 pe-2 d-flex align-items-center nav-list-custom-item"
+        >
+          <Link to="/admin">
+            <div className="p-1 text-decoration-none">
+              Admin
+            </div>
+          </Link>
+        </li>
+      );
+    }
+  }
+
   return (
     <nav className="d-flex justify-content-center align-items-center">
       <ul
@@ -89,6 +112,7 @@ const NavList = ({ navArray, menuDisplay }) => {
             </Link>
           </li>
         ))}
+        {adminDisplay()}
         {loginDisplay()}
       </ul>
     </nav>

@@ -20,6 +20,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 5,
     },
+    role: {
+      type: String,
+      required: true,
+      default: "customer"
+    }
   },
   {
     timestamps: true,

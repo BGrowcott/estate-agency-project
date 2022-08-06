@@ -2,6 +2,7 @@ const { Base, User } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
 const dotenv = require("dotenv");
+const Property = require("../models/Property");
 dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_SK);
 
@@ -12,6 +13,12 @@ const resolvers = {
     },
     singleBase: async (parent, { _id }) => {
       return Base.findById(_id);
+    },
+    property: async (parent, { _id }) => {
+      return Property.findById(_id);
+    },
+    properties: async () => {
+      return Property.find({});
     },
     users: async () => {
       return User.find();
@@ -54,7 +61,15 @@ const resolvers = {
       try {
         const session = await stripe.checkout.sessions.create({
           // payment_method_types: ["card"],
-          line_items: [{ name: 'testProduct', description:"this is a description", amount: 1000, quantity: 1, currency: "cny" }],
+          line_items: [
+            {
+              name: "testProduct",
+              description: "this is a description",
+              amount: 1000,
+              quantity: 1,
+              currency: "cny",
+            },
+          ],
           mode: "payment",
           success_url: `${url}/`,
           cancel_url: `${url}/`,
@@ -95,6 +110,25 @@ const resolvers = {
       try {
         const newBase = await Base.create({ name });
         return newBase;
+      } catch (err) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
+    },
+
+    createProperty: async (
+      parent,
+      { title, description, address, price, bedroom, bathroom }
+    ) => {
+      try {
+        const newProperty = await Property.create({
+          title,
+          description,
+          address,
+          price,
+          bedroom,
+          bathroom,
+        });
+        return newProperty;
       } catch (err) {
         throw new AuthenticationError(`Whoops something went wrong: ${err}`);
       }

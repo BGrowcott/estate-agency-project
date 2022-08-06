@@ -10,6 +10,20 @@ export const QUERY_USER = gql`
   }
 `;
 
+export const QUERY_PROPERTIES = gql`
+  query allProperties {
+    properties {
+      _id
+      title
+      description
+      address
+      price
+      bedroom
+      bathroom
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   query me {
     me {
