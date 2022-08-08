@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import logoMain from "../../images/logos/logo-secondary.png"
+import logoMain from "../../images/logos/logo-secondary.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./style.css";
 import NavList from "./navList/NavList";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const navArray = [
-    { text: "Home", href: "/", faIcon: "house" },
-    { text: "Content", href: "/content", faIcon: "building" },
+    { text: "HiZoom Properties", href: "/content", faIcon: "building" },
     { text: "Get in Touch", href: "#" },
   ];
 
@@ -23,7 +23,9 @@ const Header = () => {
       <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-between text-center">
         <div className="d-flex justify-content-between align-items-center text-center">
           <div>
-            <img className="main-logo" src={logoMain} alt="HiZOOM logo"/>
+            <Link to={"/"}>
+              <img className="main-logo" src={logoMain} alt="HiZOOM logo" />
+            </Link>
           </div>
           <FontAwesomeIcon
             className={`d-block d-md-none fs-2 pointer text-center`}

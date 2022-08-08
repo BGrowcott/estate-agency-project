@@ -37,7 +37,7 @@ const typeDefs = gql`
     users: [User]
     user(username: String!): User
     me: User
-    property: Property
+    property(_id: ID!): Property
     properties: [Property]
     base: [Base]
     singleBase(_id: ID!): Base

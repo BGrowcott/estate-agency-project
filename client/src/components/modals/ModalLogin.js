@@ -15,10 +15,6 @@ function ModalLogin() {
 
   return (
     <>
-      {/* <Button variant="primary" onClick={toggleModal}>
-        Launch demo modal
-      </Button> */}
-
       <Modal show={state.setShowLoginModal} onHide={toggleModal}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>

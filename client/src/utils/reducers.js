@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "./actions";
+import { ADD_PROPERTY_VIEW, PROPERTY_VIEW, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "./actions";
 
 // The reducer is a function that accepts the current state and an action. It returns a new state based on that action.
 export const reducer = (state, action) => {
@@ -15,6 +15,12 @@ export const reducer = (state, action) => {
         ...state,
         setShowSignupModal: !state.setShowSignupModal,
       };
+
+    case PROPERTY_VIEW: 
+    return {
+      ...state,
+      propertyView: [...action.propertyView]
+    }
 
     // Return the state as is in the event that the `action.type` passed to our reducer was not accounted for by the developers
     // This saves us from a crash.

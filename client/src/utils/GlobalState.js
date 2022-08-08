@@ -8,7 +8,7 @@ const StoreProvider = ({ value = [], ...props }) => {
   const [state, dispatch] = useProductReducer({
     setShowLoginModal: false,
     setShowSignupModal: false,
-    propertyView: [],
+    propertyView: []
   });
 
   return <Provider value={[state, dispatch]} {...props} />;

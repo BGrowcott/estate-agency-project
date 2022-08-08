@@ -15,10 +15,6 @@ function ModalSignup() {
 
   return (
     <>
-      {/* <Button variant="primary" onClick={toggleModal}>
-        Launch demo modal
-      </Button> */}
-
       <Modal show={state.setShowSignupModal} onHide={toggleModal}>
         <Modal.Header closeButton>
           <Modal.Title>Signup</Modal.Title>

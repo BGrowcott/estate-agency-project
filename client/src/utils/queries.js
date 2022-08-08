@@ -24,6 +24,21 @@ export const QUERY_PROPERTIES = gql`
   }
 `;
 
+export const QUERY_SINGLE_PROPERTY = gql`
+query singleProperty($id: ID!) {
+  property(_id: $id) {
+    _id
+    title
+    description
+    address
+    price
+    imageUrl
+    bedroom
+    bathroom
+  }
+}
+`
+
 export const QUERY_ME = gql`
   query me {
     me {
