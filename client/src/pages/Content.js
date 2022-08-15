@@ -17,15 +17,22 @@ const Content = () => {
   }, [propertyData?.properties]);
 
   return (
-    <main>
+    <main className="pe-3 ps-3">
       {loading ? (
         <div>loading</div>
       ) : (
-        state.propertyView.map((property) => (
-          <Link className="text-black text-decoration-none" to={`../property/${property._id}`} key={property._id}>
-            <ProductCard content={property}/>
-          </Link>
-        ))
+        <div>
+          <form></form>
+          {state.propertyView.map((property) => (
+            <Link
+              className="text-black text-decoration-none"
+              to={`../property/${property._id}`}
+              key={property._id}
+            >
+              <ProductCard content={property} />
+            </Link>
+          ))}
+        </div>
       )}
     </main>
   );

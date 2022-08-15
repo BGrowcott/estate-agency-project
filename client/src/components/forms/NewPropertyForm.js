@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import { useMutation } from "@apollo/client";
 import { CREATE_PROPERTY } from "../../utils/mutations";
 import { PROPERTY_VIEW } from "../../utils/actions";
 import { useStoreContext } from "../../utils/GlobalState";
 
 function NewPropertyForm() {
+  const emptyForm = {
+    title: "",
+    description: "",
+    shortDescription: "",
+    address: "",
+    price: "",
+    deposit: "",
+    bedroom: "",
+    bathroom: "",
+    vrUrl: "",
+  };
+
   const [createProperty, { error }] = useMutation(CREATE_PROPERTY);
   const [state, dispatch] = useStoreContext();
   const [validationMessage, setValidationMessage] = useState("");
-  const [propertyFormState, setPropertyFormState] = useState({
-    title: "",
-    description: "",
-    address: "",
-    price: "",
-    bedroom: "",
-    bathroom: "",
-  });
+  const [propertyFormState, setPropertyFormState] = useState(emptyForm);
 
   function formSubmit(e) {
     e.preventDefault();
@@ -36,27 +43,18 @@ function NewPropertyForm() {
       createProperty({
         variables: { ...propertyFormState },
       }).then((data) => {
-        const newPropertyView = [...state.propertyView, data.data.createProperty];
-        console.log(newPropertyView)
+        const newPropertyView = [
+          ...state.propertyView,
+          data.data.createProperty,
+        ];
         dispatch({ type: PROPERTY_VIEW, propertyView: newPropertyView });
+        setPropertyFormState(emptyForm);
+        setValidationMessage("");
+        window.location.assign(`/property/${data.data.createProperty._id}`);
       });
-      setPropertyFormState({
-        title: "",
-        description: "",
-        address: "",
-        price: "",
-        bedroom: "",
-        bathroom: "",
-      });
-      setValidationMessage("");
     } catch (error) {
       console.log(error);
     }
-  }
-
-  function checkState(e){
-    e.preventDefault()
-    console.log(state)
   }
 
   function handleInput(e) {
@@ -74,6 +72,9 @@ function NewPropertyForm() {
       case "price":
         setPropertyFormState({ ...propertyFormState, price: Number(value) });
         break;
+      case "deposit":
+        setPropertyFormState({ ...propertyFormState, deposit: Number(value) });
+        break;
       case "bedroom":
         setPropertyFormState({ ...propertyFormState, bedroom: Number(value) });
         break;
@@ -89,7 +90,12 @@ function NewPropertyForm() {
         <Form.Label>
           Title <span className="text-danger">*</span>
         </Form.Label>
-        <Form.Control onChange={handleInput} type="text" name="title" value={propertyFormState.title}/>
+        <Form.Control
+          onChange={handleInput}
+          type="text"
+          name="title"
+          value={propertyFormState.title}
+        />
       </Form.Group>
 
       <Form.Group>
@@ -104,6 +110,20 @@ function NewPropertyForm() {
           value={propertyFormState.description}
         />
       </Form.Group>
+
+      <Form.Group>
+        <Form.Label>
+          Short Description <span className="text-danger">*</span>
+        </Form.Label>
+        <Form.Control
+          onChange={handleInput}
+          type="text"
+          as="textarea"
+          name="shortDescription"
+          value={propertyFormState.shortDescription}
+        />
+      </Form.Group>
+
       <Form.Group>
         <Form.Label>
           Address <span className="text-danger">*</span>
@@ -116,28 +136,55 @@ function NewPropertyForm() {
           value={propertyFormState.address}
         />
       </Form.Group>
+      <Row>
+        <Form.Group as={Col}>
+          <Form.Label>
+            Price <span className="text-danger">*</span>
+          </Form.Label>
+          <Form.Control
+            onChange={handleInput}
+            type="text"
+            name="price"
+            value={propertyFormState.price}
+          />
+        </Form.Group>
+        <Form.Group as={Col}>
+          <Form.Label>
+            Deposit <span className="text-danger">*</span>
+          </Form.Label>
+          <Form.Control
+            onChange={handleInput}
+            type="text"
+            name="deposit"
+            value={propertyFormState.deposit}
+          />
+        </Form.Group>
+      </Row>
+      <Row>
+        <Form.Group as={Col}>
+          <Form.Label>
+            Number of Bedrooms <span className="text-danger">*</span>
+          </Form.Label>
+          <Form.Control
+            onChange={handleInput}
+            type="text"
+            name="bedroom"
+            value={propertyFormState.bedroom}
+          />
+        </Form.Group>
 
-      <Form.Group>
-        <Form.Label>
-          Price <span className="text-danger">*</span>
-        </Form.Label>
-        <Form.Control onChange={handleInput} type="text" name="price" value={propertyFormState.price}/>
-      </Form.Group>
-
-      <Form.Group>
-        <Form.Label>
-          Number of Bedrooms <span className="text-danger">*</span>
-        </Form.Label>
-        <Form.Control onChange={handleInput} type="text" name="bedroom" value={propertyFormState.bedroom}/>
-      </Form.Group>
-
-      <Form.Group>
-        <Form.Label>
-          Number of Bathrooms <span className="text-danger">*</span>
-        </Form.Label>
-        <Form.Control onChange={handleInput} type="text" name="bathroom" value={propertyFormState.bathroom}/>
-      </Form.Group>
-
+        <Form.Group as={Col}>
+          <Form.Label>
+            Number of Bathrooms <span className="text-danger">*</span>
+          </Form.Label>
+          <Form.Control
+            onChange={handleInput}
+            type="text"
+            name="bathroom"
+            value={propertyFormState.bathroom}
+          />
+        </Form.Group>
+      </Row>
       <Button
         className="mt-2 mb-2"
         onClick={formSubmit}
@@ -146,7 +193,6 @@ function NewPropertyForm() {
       >
         Save
       </Button>
-      <button onClick={checkState}>Check State</button>
       <div className="text-danger fst-italic">{validationMessage}</div>
     </Form>
   );

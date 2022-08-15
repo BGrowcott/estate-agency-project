@@ -11,12 +11,18 @@ const typeDefs = gql`
   type Property {
     _id: ID
     title: String
+    shortDescription: String
     description: String
     address: String
-    price: Int
+    price: Float
+    deposit: Float
     imageUrl: [String]
+    vrUrl: String
     bedroom: Int
     bathroom: Int
+    isAvailable: Boolean
+    createdAt: String
+    modifiedAt: String
   }
 
   type Base {
@@ -48,7 +54,30 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     createBase(name: String!): Base
-    createProperty(title: String!, description: String!, address: String! price: Int!, bedroom: Int, bathroom: Int): Property
+    createProperty(
+      title: String!
+      description: String!
+      shortDescription: String!
+      address: String!
+      price: Float!
+      deposit: Float!
+      bedroom: Int!
+      bathroom: Int!
+      vrUrl: String
+    ): Property
+    updateProperty(
+      _id: ID!
+      title: String
+      description: String
+      shortDescription: String
+      address: String
+      price: Float
+      deposit: Float
+      bedroom: Int
+      bathroom: Int
+      vrUrl: String
+      isAvailable: Boolean
+    ): Property
   }
 `;
 

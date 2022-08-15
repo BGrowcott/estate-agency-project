@@ -117,21 +117,80 @@ const resolvers = {
 
     createProperty: async (
       parent,
-      { title, description, address, price, bedroom, bathroom }
+      {
+        title,
+        shortDescription,
+        description,
+        address,
+        price,
+        deposit,
+        bedroom,
+        bathroom,
+        vrUrl,
+      },
+      context
     ) => {
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError(
+          `You need to be logged in as a administrator to perform this action`
+        );
+      }
       try {
         const newProperty = await Property.create({
           title,
+          shortDescription,
           description,
           address,
           price,
+          deposit,
           bedroom,
           bathroom,
+          vrUrl,
         });
         return newProperty;
       } catch (err) {
         throw new AuthenticationError(`Whoops something went wrong: ${err}`);
       }
+    },
+
+    updateProperty: async (
+      parent,
+      {
+        _id,
+        title,
+        shortDescription,
+        description,
+        address,
+        price,
+        deposit,
+        bedroom,
+        bathroom,
+        vrUrl,
+        isAvailable
+      },
+      context
+    ) => {
+      const property = await Property.findByIdAndUpdate(
+        _id,
+        {
+          $set: {
+            title,
+            shortDescription,
+            description,
+            address,
+            price,
+            deposit,
+            bedroom,
+            bathroom,
+            vrUrl,
+            isAvailable
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      return property;
     },
   },
 };

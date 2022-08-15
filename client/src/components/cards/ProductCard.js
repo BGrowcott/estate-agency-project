@@ -2,37 +2,40 @@ import React from "react";
 import placeholder from "../../images/placeholder.jpg";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ImageCarousel from "../carousel/ImageCarousel";
 
 function ProductCard({ content }) {
+
+  const imageArray = [placeholder, placeholder, placeholder]
+
   return (
-    <div className="container">
-      <div className="m-2 mt-5 mb-5 row align-items-center p-2 rounded bg-light shadow-custom">
+    <div>
+      <div className="m-2 mt-5 mb-5 row p-2 rounded bg-light shadow-custom">
         <div className="col-xs-12 col-md-6">
-          <div className="h-0">
-            <h2 className="font-sm h6 card-title-top p-1 w-90 m-auto shadow-custom rounded text-center bg-light-fade">
-              {content.title}
-            </h2>
-          </div>
           <div>
             <figure className="m-0">
-              <img
-                className="w-100 rounded"
-                src={placeholder}
-                // alt={content.imageDescription}
-              />
+              <ImageCarousel imageArray={imageArray}/>
               <div className="h-0">
                 <figcaption className="caption-custom bg-light-fade m-auto text-center">
                   <ul className="list-group list-group-horizontal justify-content-around">
-                    <li className="list-unstyled">{content.bedroom} <FontAwesomeIcon icon={solid("bed")} /></li>
-                    <li className="list-unstyled">{content.bathroom} <FontAwesomeIcon icon={solid("bath")} /></li>
+                    <li className="list-unstyled">
+                      {content.bedroom} <FontAwesomeIcon icon={solid("bed")} />
+                    </li>
+                    <li className="list-unstyled">
+                      {content.bathroom}{" "}
+                      <FontAwesomeIcon icon={solid("bath")} />
+                    </li>
                   </ul>
                 </figcaption>
               </div>
             </figure>
           </div>
         </div>
-        <div className="col-xs-12 col-md-6">
-          <h2 className="h6">${content.price} per month</h2>
+        <div className="col-xs-12 col-md-6 d-flex flex-column justify-content-between">
+          <h2 className="font-sm h5 p-1 w-90 mb-2 text-center">
+            {content.title}
+          </h2>
+          <h3 className="h6">£{content.price}/week</h3>
           <p>{content.address}</p>
           <p>{content.description}</p>
         </div>

@@ -18,6 +18,10 @@ const Header = () => {
     setMenuDisplay(!menuDisplay);
   }
 
+  function closeMenuDisplay() {
+    setTimeout(()=> {setMenuDisplay(false)}, 100);
+  }
+
   return (
     <header className="bg-light-fade p-1 pt-md-0 pb-md-0 shadow-custom position-fixed w-100">
       <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-between text-center">
@@ -27,11 +31,12 @@ const Header = () => {
               <img className="main-logo" src={logoMain} alt="HiZOOM logo" />
             </Link>
           </div>
-          <FontAwesomeIcon
-            className={`d-block d-md-none fs-2 pointer text-center`}
-            icon={solid("bars")}
-            onClick={toggleMenuDisplay}
-          />
+          <button className="btn" onClick={toggleMenuDisplay} onBlur={closeMenuDisplay}>
+            <FontAwesomeIcon
+              className={`d-block d-md-none fs-2 pointer text-center`}
+              icon={solid("bars")}
+            />
+          </button>
         </div>
         <NavList navArray={navArray} menuDisplay={menuDisplay} />
       </div>
