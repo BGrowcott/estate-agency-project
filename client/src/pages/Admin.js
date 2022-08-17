@@ -5,6 +5,7 @@ import Auth from "../utils/auth";
 import { QUERY_PROPERTIES } from "../utils/queries";
 import { useStoreContext } from '../utils/GlobalState';
 import { useQuery } from "@apollo/client";
+import ModalUpdateProperty from "../components/modals/ModalUpdateProperty";
 
 function Admin() {
   const [state, dispatch] = useStoreContext();
@@ -22,6 +23,8 @@ function Admin() {
         <h1>Admin Page</h1>
         <AdminAccordion properties={state.propertyView}/>
       </section>
+      {/* set below to open on state variable */}
+      <ModalUpdateProperty showUpdateModal={state}/>
     </main>
   );
 }

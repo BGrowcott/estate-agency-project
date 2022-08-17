@@ -1,8 +1,7 @@
-const { Base, User } = require("../models");
+const { Base, User, Property } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
 const dotenv = require("dotenv");
-const Property = require("../models/Property");
 dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_SK);
 
@@ -127,6 +126,7 @@ const resolvers = {
         bedroom,
         bathroom,
         vrUrl,
+        keyFeatures
       },
       context
     ) => {
@@ -146,6 +146,7 @@ const resolvers = {
           bedroom,
           bathroom,
           vrUrl,
+          keyFeatures
         });
         return newProperty;
       } catch (err) {
@@ -166,7 +167,8 @@ const resolvers = {
         bedroom,
         bathroom,
         vrUrl,
-        isAvailable
+        isAvailable,
+        keyFeatures
       },
       context
     ) => {
@@ -183,13 +185,15 @@ const resolvers = {
             bedroom,
             bathroom,
             vrUrl,
-            isAvailable
+            isAvailable,
+            keyFeatures
           },
         },
         {
           new: true,
         }
       );
+      property.save();
       return property;
     },
   },

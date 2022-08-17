@@ -11,17 +11,23 @@ export const QUERY_USER = gql`
 `;
 
 export const QUERY_PROPERTIES = gql`
-  query allProperties {
-    properties {
-      _id
-      title
-      description
-      address
-      price
-      bedroom
-      bathroom
-    }
+query allProperties {
+  properties {
+    _id
+    title
+    description
+    address
+    price
+    bedroom
+    bathroom
+    keyFeatures
+    shortDescription
+    deposit
+    imageUrl
+    vrUrl
+    isAvailable
   }
+}
 `;
 
 export const QUERY_SINGLE_PROPERTY = gql`
@@ -32,9 +38,14 @@ query singleProperty($id: ID!) {
     description
     address
     price
-    imageUrl
     bedroom
     bathroom
+    keyFeatures
+    shortDescription
+    deposit
+    imageUrl
+    vrUrl
+    isAvailable
   }
 }
 `

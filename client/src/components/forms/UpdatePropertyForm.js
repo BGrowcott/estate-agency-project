@@ -1,14 +1,14 @@
+import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { useMutation } from "@apollo/client";
-import { CREATE_PROPERTY } from "../../utils/mutations";
-import { PROPERTY_VIEW } from "../../utils/actions";
+import { SHOW_MODAL_UPDATE, PROPERTY_VIEW } from "../../utils/actions";
 import { useStoreContext } from "../../utils/GlobalState";
+import { UPDATE_PROPERTY } from "../../utils/mutations";
 
-function NewPropertyForm() {
+function UpdatePropertyForm() {
   const emptyForm = {
     title: "",
     description: "",
@@ -20,38 +20,33 @@ function NewPropertyForm() {
     bathroom: "",
     vrUrl: "",
     keyFeatures: "",
+    isAvailable: "",
   };
 
-  const [createProperty, { error }] = useMutation(CREATE_PROPERTY);
   const [state, dispatch] = useStoreContext();
-  const [validationMessage, setValidationMessage] = useState("");
-  const [propertyFormState, setPropertyFormState] = useState(emptyForm);
+  const [propertyFormState, setPropertyFormState] = useState({
+    ...emptyForm,
+    ...state.selectedUpdateProperty,
+  });
+  const [updateProperty, { error }] = useMutation(UPDATE_PROPERTY);
+
+  function cancelUpdate() {
+    dispatch({ type: SHOW_MODAL_UPDATE });
+  }
 
   function formSubmit(e) {
     e.preventDefault();
     try {
-      for (const [key, value] of Object.entries(propertyFormState)) {
-        if (value === "") {
-          setValidationMessage(
-            `* ${
-              key.charAt(0).toUpperCase() + key.slice(1)
-            } is a required field`
-          );
-          return;
-        }
-      }
-
-      createProperty({
+      propertyFormState.id = propertyFormState._id;
+      propertyFormState.isAvailable = propertyFormState.isAvailable === "true"
+      updateProperty({
         variables: { ...propertyFormState },
       }).then((data) => {
-        const newPropertyView = [
-          ...state.propertyView,
-          data.data.createProperty,
-        ];
-        dispatch({ type: PROPERTY_VIEW, propertyView: newPropertyView });
-        setPropertyFormState(emptyForm);
-        setValidationMessage("");
-        window.location.assign(`/property/${data.data.createProperty._id}`);
+        console.log();
+        const index = state.propertyView.indexOf(state.selectedUpdateProperty);
+        state.propertyView.splice(index, 1, data.data.updateProperty);
+        dispatch({ type: PROPERTY_VIEW, propertyView: state.propertyView });
+        dispatch({ type: SHOW_MODAL_UPDATE });
       });
     } catch (error) {
       console.log(error);
@@ -92,6 +87,13 @@ function NewPropertyForm() {
         setPropertyFormState({
           ...propertyFormState,
           keyFeatures: value.replace(" ", "").split(","),
+        });
+        break;
+      case "isAvailable":
+        console.log(value);
+        setPropertyFormState({
+          ...propertyFormState,
+          isAvailable: value,
         });
         break;
     }
@@ -149,6 +151,7 @@ function NewPropertyForm() {
           value={propertyFormState.address}
         />
       </Form.Group>
+
       <Form.Group>
         <Form.Label>VR URL</Form.Label>
         <Form.Control
@@ -158,6 +161,7 @@ function NewPropertyForm() {
           value={propertyFormState.vrUrl}
         />
       </Form.Group>
+
       <Form.Group className="mb-2">
         <Form.Label>Key Features</Form.Label>
         <Form.Control
@@ -171,6 +175,7 @@ function NewPropertyForm() {
           Enter features like so: feature1,feature2,feature3
         </Form.Text>
       </Form.Group>
+
       <Row>
         <Form.Group as={Col}>
           <Form.Label>
@@ -183,6 +188,7 @@ function NewPropertyForm() {
             value={propertyFormState.price}
           />
         </Form.Group>
+
         <Form.Group as={Col}>
           <Form.Label>
             Deposit <span className="text-danger">*</span>
@@ -220,6 +226,26 @@ function NewPropertyForm() {
           />
         </Form.Group>
       </Row>
+        <Form.Check
+          inline
+          onChange={handleInput}
+          type="radio"
+          label="Property Available"
+          name="isAvailable"
+          id="isAvailableTrue"
+          value={true}
+          checked={propertyFormState.isAvailable === "true" || propertyFormState.isAvailable === true}
+        />
+        <Form.Check
+          inline
+          onChange={handleInput}
+          type="radio"
+          label="Property not Available"
+          name="isAvailable"
+          id="isAvailableFalse"
+          value={false}
+          checked={propertyFormState.isAvailable === "false" || propertyFormState.isAvailable === false}
+        />
       <Button
         className="mt-2 mb-2"
         onClick={formSubmit}
@@ -228,9 +254,11 @@ function NewPropertyForm() {
       >
         Save
       </Button>
-      <div className="text-danger fst-italic">{validationMessage}</div>
+      <Button className="ms-2" variant="secondary" onClick={cancelUpdate}>
+        Cancel
+      </Button>
     </Form>
   );
 }
 
-export default NewPropertyForm;
+export default UpdatePropertyForm;

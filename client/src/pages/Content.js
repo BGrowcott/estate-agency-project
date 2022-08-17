@@ -22,7 +22,6 @@ const Content = () => {
         <div>loading</div>
       ) : (
         <div>
-          <form></form>
           {state.propertyView.map((property) => (
             <Link
               className="text-black text-decoration-none"

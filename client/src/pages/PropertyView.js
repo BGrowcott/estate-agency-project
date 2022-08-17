@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import ImageCarousel from "../components/carousel/ImageCarousel";
 import placeholder from "../images/placeholder.jpg";
+import Auth from "../utils/auth";
 
 function PropertyView() {
   const { id } = useParams();
@@ -13,7 +14,6 @@ function PropertyView() {
   const { loading, data: propertyData } = useQuery(QUERY_SINGLE_PROPERTY, {
     variables: { id: id },
   });
-
   const property = propertyData?.property || "";
 
   return (
@@ -30,6 +30,14 @@ function PropertyView() {
             <div className="row">
               <div className="col-xs-12 col-md-7">
                 <ImageCarousel imageArray={imageArray} />
+                {Auth.loggedIn() && Auth.getProfile().data.role === "admin" ? (
+                  <div className="mb-3">
+                    <label htmlFor="formFile" className="form-label">
+                      Add new image
+                    </label>
+                    <input className="form-control" type="file" id="formFile" />
+                  </div>
+                ) : null}
               </div>
               <div className="col-xs-12 col-md-5">
                 <h2 className="h5">{property.title}</h2>

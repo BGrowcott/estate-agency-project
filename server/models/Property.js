@@ -9,7 +9,6 @@ const propertySchema = new Schema(
         shortDescription: {
             type: String,
             required: true,
-            default: "Remove this default"
         },
         description: {
             type: String,
@@ -35,7 +34,7 @@ const propertySchema = new Schema(
         isAvailable: {
             type: Boolean,
             required: true,
-            default: false
+            default: true
         },
         vrUrl: {
             type: String
@@ -44,6 +43,9 @@ const propertySchema = new Schema(
             type: Number,
             required: true,
             default: 1000
+        },
+        keyFeatures: {
+            type: [String]
         }
     },
     {

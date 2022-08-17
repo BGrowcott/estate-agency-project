@@ -1,8 +1,19 @@
 import React from "react";
 import Accordion from 'react-bootstrap/Accordion';
 import NewPropertyForm from "../forms/NewPropertyForm";
+import { useStoreContext } from "../../utils/GlobalState";
+import { SELECTED_UPDATE_PROPERTY, SHOW_MODAL_UPDATE } from "../../utils/actions";
+import { Link } from "react-router-dom";
 
 function AdminAccordion({properties}){
+
+  const [state, dispatch] = useStoreContext();
+
+  function toggleModalUpdate(e) {
+    const selectedProperty = state.propertyView.find(property => property._id === e.target.dataset.id)
+    dispatch({type: SELECTED_UPDATE_PROPERTY, property: selectedProperty});
+    dispatch({ type: SHOW_MODAL_UPDATE });
+  }
 
     return (
         <Accordion>
@@ -20,8 +31,10 @@ function AdminAccordion({properties}){
                     <tr>
                       <th>Title</th>
                       <th>Address</th>
-                      <th>¥/week</th>
+                      <th>£/week</th>
+                      <th>Available</th>
                       <th>Edit</th>
+                      <th>View</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -30,7 +43,9 @@ function AdminAccordion({properties}){
                         <td>{property.title}</td>
                         <td>{property.address}</td>
                         <td>{property.price}</td>
-                        <td><button className="btn btn-primary btn-sm">Edit</button></td>
+                        <td>{property.isAvailable ? "Yes" : "No"}</td>
+                        <td><a data-id={property._id} onClick={toggleModalUpdate} href="#">Edit</a></td>
+                        <td><Link target="_blank" to={`/property/${property._id}`}>View</Link></td>
                       </tr>
                     ))}
                   </tbody>

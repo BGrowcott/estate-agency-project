@@ -21,6 +21,7 @@ const typeDefs = gql`
     bedroom: Int
     bathroom: Int
     isAvailable: Boolean
+    keyFeatures: [String]
     createdAt: String
     modifiedAt: String
   }
@@ -52,8 +53,11 @@ const typeDefs = gql`
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
+
     login(email: String!, password: String!): Auth
+
     createBase(name: String!): Base
+
     createProperty(
       title: String!
       description: String!
@@ -64,7 +68,9 @@ const typeDefs = gql`
       bedroom: Int!
       bathroom: Int!
       vrUrl: String
+      keyFeatures: [String]
     ): Property
+    
     updateProperty(
       _id: ID!
       title: String
@@ -76,6 +82,7 @@ const typeDefs = gql`
       bedroom: Int
       bathroom: Int
       vrUrl: String
+      keyFeatures: [String]
       isAvailable: Boolean
     ): Property
   }
