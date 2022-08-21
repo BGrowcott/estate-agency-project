@@ -56,3 +56,19 @@ main {
 .footer-logo{
   width: 100px
 }
+
+.list-no-style {
+  list-style-type: none;
+}
+
+/* Animations */
+
+.fadeIn {
+  animation: fadeIn 5s;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}

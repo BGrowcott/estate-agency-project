@@ -4,6 +4,17 @@ const { signToken } = require("../utils/auth");
 const dotenv = require("dotenv");
 dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_SK);
+const co = require("co");
+const OSS = require("ali-oss");
+var fs = require("fs");
+
+var client = new OSS({
+  region: process.env.OSS_REGION,
+  accessKeyId: process.env.AK_ID,
+  accessKeySecret: process.env.AK_SECRET,
+  bucket: process.env.BUCKET,
+  endpoint: process.env.ENDPOINT,
+});
 
 const resolvers = {
   Query: {
@@ -126,7 +137,7 @@ const resolvers = {
         bedroom,
         bathroom,
         vrUrl,
-        keyFeatures
+        keyFeatures,
       },
       context
     ) => {
@@ -146,7 +157,7 @@ const resolvers = {
           bedroom,
           bathroom,
           vrUrl,
-          keyFeatures
+          keyFeatures,
         });
         return newProperty;
       } catch (err) {
@@ -168,7 +179,7 @@ const resolvers = {
         bathroom,
         vrUrl,
         isAvailable,
-        keyFeatures
+        keyFeatures,
       },
       context
     ) => {
@@ -186,7 +197,7 @@ const resolvers = {
             bathroom,
             vrUrl,
             isAvailable,
-            keyFeatures
+            keyFeatures,
           },
         },
         {
@@ -195,6 +206,36 @@ const resolvers = {
       );
       property.save();
       return property;
+    },
+
+    uploadImage: async (
+      parent,
+      { imageFile, fileName, fileExtension, propertyId }
+    ) => {
+      try {
+      const buffer = Buffer.from(
+        imageFile.replace(/^data:image\/\w+;base64,/, ""),
+        "base64"
+      );
+      co(function* () {
+        const result = yield client.put(
+          `/hizoomNewProject/propertyImages/${fileName}.${fileExtension}`,
+          buffer
+        );
+      });
+      const property = await Property.findByIdAndUpdate(
+        propertyId,
+        {
+          $addToSet: {
+            imageUrl: `${fileName}.${fileExtension}`,
+          },
+        },
+        { new: true }
+      );
+
+      property.save();
+      return property;
+      } catch (error) {console.log(error)}
     },
   },
 };

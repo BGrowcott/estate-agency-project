@@ -4,6 +4,7 @@ import {
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_SIGNUP,
   SHOW_MODAL_UPDATE,
+  SHOW_MODAL_CONTACTS,
   SELECTED_UPDATE_PROPERTY,
 } from "./actions";
 
@@ -25,7 +26,11 @@ export const reducer = (state, action) => {
         ...state,
         setShowUpdateModal: !state.setShowUpdateModal,
       };
-
+    case SHOW_MODAL_CONTACTS:
+      return {
+        ...state,
+        setShowContactsModal: !state.setShowContactsModal,
+      };
     case PROPERTY_VIEW:
       return {
         ...state,

@@ -115,3 +115,11 @@ export const UPDATE_PROPERTY = gql`
     }
   }
 `;
+
+export const IMAGE_UPLOAD = gql`
+  mutation imageUpload($imageFile: String, $fileName: String, $fileExtension: String, $propertyId: ID) {
+    uploadImage(imageFile: $imageFile, fileName: $fileName, fileExtension: $fileExtension, propertyId: $propertyId) {
+      imageUrl
+    }
+  }
+`;

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const navArray = [
     { text: "HiZoom Properties", href: "/content", faIcon: "building" },
-    { text: "Get in Touch", href: "#" },
+    { text: "WeChat", href: "#", faIcon: "weixin"},
   ];
 
   const [menuDisplay, setMenuDisplay] = useState(false);

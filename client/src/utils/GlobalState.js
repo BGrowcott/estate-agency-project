@@ -9,6 +9,7 @@ const StoreProvider = ({ value = [], ...props }) => {
     setShowLoginModal: false,
     setShowSignupModal: false,
     setShowUpdateModal: false,
+    setShowContactsModal: false,
     propertyView: [],
     selectedUpdateProperty: {}
   });

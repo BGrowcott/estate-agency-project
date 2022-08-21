@@ -38,11 +38,11 @@ function UpdatePropertyForm() {
     e.preventDefault();
     try {
       propertyFormState.id = propertyFormState._id;
-      propertyFormState.isAvailable = propertyFormState.isAvailable === "true"
+      propertyFormState.isAvailable = propertyFormState.isAvailable === "true" || propertyFormState.isAvailable === true
+      propertyFormState.keyFeatures = propertyFormState.keyFeatures.split(',')
       updateProperty({
         variables: { ...propertyFormState },
       }).then((data) => {
-        console.log();
         const index = state.propertyView.indexOf(state.selectedUpdateProperty);
         state.propertyView.splice(index, 1, data.data.updateProperty);
         dispatch({ type: PROPERTY_VIEW, propertyView: state.propertyView });
@@ -86,7 +86,7 @@ function UpdatePropertyForm() {
       case "keyFeatures":
         setPropertyFormState({
           ...propertyFormState,
-          keyFeatures: value.replace(" ", "").split(","),
+          keyFeatures: value,
         });
         break;
       case "isAvailable":

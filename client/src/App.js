@@ -18,6 +18,7 @@ import ModalSignup from "./components/modals/ModalSignup";
 import ModalLogin from "./components/modals/ModalLogin";
 import Content from "./pages/Content";
 import PropertyView from "./pages/PropertyView";
+import ModalContacts from "./components/modals/ModalContacts";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -71,6 +72,7 @@ function App() {
           <Footer />
           <ModalLogin />
           <ModalSignup />
+          <ModalContacts/>
         </StoreProvider>
       </Router>
     </ApolloProvider>

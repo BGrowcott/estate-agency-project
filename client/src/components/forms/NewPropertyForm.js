@@ -91,7 +91,7 @@ function NewPropertyForm() {
       case "keyFeatures":
         setPropertyFormState({
           ...propertyFormState,
-          keyFeatures: value.replace(" ", "").split(","),
+          keyFeatures: value,
         });
         break;
     }

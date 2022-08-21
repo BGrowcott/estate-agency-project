@@ -7,6 +7,7 @@ import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import ImageCarousel from "../components/carousel/ImageCarousel";
 import placeholder from "../images/placeholder.jpg";
 import Auth from "../utils/auth";
+import FileUpload from "../components/fileUpload/FileUpload";
 
 function PropertyView() {
   const { id } = useParams();
@@ -22,26 +23,66 @@ function PropertyView() {
         <div>loading</div>
       ) : (
         <section className="container-lg">
+
           <Link className="text-decoration-none" to={"/content"}>
             <FontAwesomeIcon icon={solid("arrow-left")} /> Back to all
             properties
           </Link>
-          <div className="container-lg">
+
+          <div >
             <div className="row">
+
               <div className="col-xs-12 col-md-7">
-                <ImageCarousel imageArray={imageArray} />
+                <ImageCarousel imageArray={property.imageUrl} />
                 {Auth.loggedIn() && Auth.getProfile().data.role === "admin" ? (
-                  <div className="mb-3">
-                    <label htmlFor="formFile" className="form-label">
-                      Add new image
-                    </label>
-                    <input className="form-control" type="file" id="formFile" />
-                  </div>
+                    <FileUpload/>
                 ) : null}
+                <div>
+                  <h3 className="h6 text-center">Features</h3>
+                  <ul className="row list-no-style text-center p-0">
+                    {property.keyFeatures.map((feature, index) => {
+                      return (
+                        <li key={index} className="col-6">
+                          {feature}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </div>
+
               <div className="col-xs-12 col-md-5">
-                <h2 className="h5">{property.title}</h2>
-                <p>{property.description}</p>
+                <div>
+                  <h2 className="h5">{property.title}</h2>
+                  <p>{property.address}</p>
+                  <p>£{property.price}/week</p>
+                  <p>{property.description}</p>
+                </div>
+
+                <div className="mb-3">
+                  <ul className="list-group list-group-horizontal">
+                    <li className="list-unstyled me-3">
+                      <div className="d-flex flex-column">
+                        <span>Bedrooms </span>
+                        <span>
+                          <FontAwesomeIcon icon={solid("bed")} /> x
+                          {property.bedroom}
+                        </span>
+                      </div>
+                    </li>
+
+                    <li className="list-unstyled">
+                      <div className="d-flex flex-column">
+                        <span>Bathrooms </span>
+                        <span>
+                          <FontAwesomeIcon icon={solid("bath")} /> x
+                          {property.bathroom}
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <a className="btn btn-primary" target="_blank" href={property.vrUrl}>View VR</a>
               </div>
             </div>
           </div>

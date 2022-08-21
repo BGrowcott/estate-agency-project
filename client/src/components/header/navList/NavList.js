@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid, brands } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Auth from "../../../utils/auth";
 import Button from "react-bootstrap/Button";
-import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../../utils/actions";
+import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_MODAL_CONTACTS } from "../../../utils/actions";
 import { useStoreContext } from "../../../utils/GlobalState";
 import { Link } from "react-router-dom";
 
@@ -25,11 +25,15 @@ const NavList = ({ navArray, menuDisplay }) => {
     dispatch({ type: SHOW_MODAL_SIGNUP });
   }
 
+  function toggleModalContacts() {
+    dispatch({ type: SHOW_MODAL_CONTACTS });
+  }
+
   function faIcon(item) {
     if (item.faIcon) {
       switch (item.faIcon) {
-        case "house":
-          return <FontAwesomeIcon className="me-1" icon={solid("house")} />;
+        case "weixin":
+          return <FontAwesomeIcon className="me-1" icon={brands("weixin")} />;
         case "building":
           return <FontAwesomeIcon className="me-1" icon={solid("building")} />;
       }
@@ -103,6 +107,7 @@ const NavList = ({ navArray, menuDisplay }) => {
           <li
             className="ms-2 me-2 mb-2 mb-md-0 ps-2 pe-2 d-flex align-items-center nav-list-custom-item"
             key={index}
+            onClick={item.faIcon === "weixin" ? toggleModalContacts : null}
           >
             <Link to={item.href}>
               <div className="p-1 text-decoration-none">

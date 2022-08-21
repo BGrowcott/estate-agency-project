@@ -39,7 +39,7 @@ const typeDefs = gql`
   type Checkout {
     session: ID
   }
-
+  
   type Query {
     users: [User]
     user(username: String!): User
@@ -85,6 +85,8 @@ const typeDefs = gql`
       keyFeatures: [String]
       isAvailable: Boolean
     ): Property
+
+    uploadImage(imageFile: String, fileName: String, fileExtension: String, propertyId: ID): Property
   }
 `;
 
