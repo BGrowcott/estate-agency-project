@@ -31,6 +31,9 @@ function NewPropertyForm() {
     e.preventDefault();
     try {
       for (const [key, value] of Object.entries(propertyFormState)) {
+        if (key === "vrUrl") {
+          continue;
+        }
         if (value === "") {
           setValidationMessage(
             `* ${
@@ -108,6 +111,7 @@ function NewPropertyForm() {
           type="text"
           name="title"
           value={propertyFormState.title}
+          required
         />
       </Form.Group>
 
@@ -121,6 +125,7 @@ function NewPropertyForm() {
           as="textarea"
           name="description"
           value={propertyFormState.description}
+          required
         />
       </Form.Group>
 
@@ -134,6 +139,7 @@ function NewPropertyForm() {
           as="textarea"
           name="shortDescription"
           value={propertyFormState.shortDescription}
+          required
         />
       </Form.Group>
 
@@ -147,6 +153,7 @@ function NewPropertyForm() {
           as="textarea"
           name="address"
           value={propertyFormState.address}
+          required
         />
       </Form.Group>
       <Form.Group>
@@ -166,6 +173,7 @@ function NewPropertyForm() {
           as="textarea"
           name="keyFeatures"
           value={propertyFormState.keyFeatures}
+          required
         />
         <Form.Text className="text-muted">
           Enter features like so: feature1,feature2,feature3
@@ -181,6 +189,7 @@ function NewPropertyForm() {
             type="text"
             name="price"
             value={propertyFormState.price}
+            required
           />
         </Form.Group>
         <Form.Group as={Col}>
@@ -192,6 +201,7 @@ function NewPropertyForm() {
             type="text"
             name="deposit"
             value={propertyFormState.deposit}
+            required
           />
         </Form.Group>
       </Row>
@@ -205,6 +215,7 @@ function NewPropertyForm() {
             type="text"
             name="bedroom"
             value={propertyFormState.bedroom}
+            required
           />
         </Form.Group>
 
@@ -217,6 +228,7 @@ function NewPropertyForm() {
             type="text"
             name="bathroom"
             value={propertyFormState.bathroom}
+            required
           />
         </Form.Group>
       </Row>

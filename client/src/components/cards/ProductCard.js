@@ -17,7 +17,7 @@ function ProductCard({ content }) {
             </figure>
           </div>
         </div>
-        <div className="col-xs-12 col-md-6 d-flex flex-column justify-content-between">
+        <div className="col-xs-12 col-md-6 d-flex flex-column justify-content-between inset-box">
           <h2 className="font-sm h5 p-1 w-90 mb-2 text-center">
             {content.title}
           </h2>

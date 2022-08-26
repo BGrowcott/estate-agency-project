@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json({limit: '5mb'}));
 app.use(
   session({
-    secret: "foo",
+    secret: process.env.SESSION_SECRET,
     store: MongoStore.create(db),
     cookie: {
       // maxAge sets the maximum age for the session to be active. Listed in milliseconds.

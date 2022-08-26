@@ -1,8 +1,8 @@
 {
-  "name": "estate-agency-project",
+  "name": "hizoom-project",
   "version": "1.0.0",
-  "description": "Just a base I can use to start new projects from",
-  "main": "index.js",
+  "description": "App for estate agency HiZoom",
+  "main": "server.js",
   "scripts": {
     "start": "node server/server.js --ignore client",
     "develop": "concurrently \"cd server && nodemon\" \"cd client && npm start\"",

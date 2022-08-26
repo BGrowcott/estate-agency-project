@@ -49,6 +49,13 @@ main {
   bottom: 1.5rem;
 }
 
+.inset-box{
+    background-color: whitesmoke;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px inset grey;
+    padding: 10px;
+}
+
 .h-0 {
   height: 0;
 }

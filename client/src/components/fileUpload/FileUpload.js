@@ -20,7 +20,7 @@ function FileUpload() {
       return alert("Please choose just one file.");
     }
     let extn = file.name.split(".").pop();
-    if (extn !== "jpg" && extn !== "png" && extn !== "gif") {
+    if (extn !== "jpg" && extn !== "png" && extn !== "gif" && extn !== "jpeg") {
       return alert("Please choose an image file");
     }
 
@@ -34,9 +34,7 @@ function FileUpload() {
         propertyId: id,
       };
 
-      console.log(request);
-
-      imageUpload({
+      const addedImage = await imageUpload({
         variables: {
           imageFile: request.imageFile,
           fileName: request.fileName,
@@ -44,6 +42,8 @@ function FileUpload() {
           propertyId: request.propertyId,
         },
       });
+
+      window.location.reload();
     };
   }
 
@@ -54,7 +54,7 @@ function FileUpload() {
           Add new image
         </label>
         <div className="d-flex align-items-center">
-          <input className="form-control" type="file" id="imageUpload" />
+          <input className="form-control" type="file" id="imageUpload" accept="image/png, image/jpeg, image/jpg, image/gif" />
           <button className="btn btn-primary" onClick={addPhoto}>
             Save
           </button>

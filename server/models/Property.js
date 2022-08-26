@@ -46,7 +46,10 @@ const propertySchema = new Schema(
         },
         keyFeatures: {
             type: [String]
-        }
+        },
+        availableFrom: {
+            type: Date
+        },
     },
     {
         timestamps: true,
