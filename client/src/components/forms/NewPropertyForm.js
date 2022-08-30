@@ -19,30 +19,36 @@ function NewPropertyForm() {
     bedroom: "",
     bathroom: "",
     vrUrl: "",
-    keyFeatures: "",
   };
 
   const [createProperty, { error }] = useMutation(CREATE_PROPERTY);
   const [state, dispatch] = useStoreContext();
   const [validationMessage, setValidationMessage] = useState("");
   const [propertyFormState, setPropertyFormState] = useState(emptyForm);
+  const [validated, setValidated] = useState(false);
 
   function formSubmit(e) {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      return;
+    }
+
     try {
-      for (const [key, value] of Object.entries(propertyFormState)) {
-        if (key === "vrUrl") {
-          continue;
-        }
-        if (value === "") {
-          setValidationMessage(
-            `* ${
-              key.charAt(0).toUpperCase() + key.slice(1)
-            } is a required field`
-          );
-          return;
-        }
-      }
+      // for (const [key, value] of Object.entries(propertyFormState)) {
+      //   if (key === "vrUrl") {
+      //     continue;
+      //   }
+      //   if (value === "") {
+      //     setValidationMessage(
+      //       `* ${
+      //         key.charAt(0).toUpperCase() + key.slice(1)
+      //       } is a required field`
+      //     );
+      //     return;
+      //   }
+      // }
 
       createProperty({
         variables: { ...propertyFormState },
@@ -91,17 +97,11 @@ function NewPropertyForm() {
       case "vrUrl":
         setPropertyFormState({ ...propertyFormState, vrUrl: value });
         break;
-      case "keyFeatures":
-        setPropertyFormState({
-          ...propertyFormState,
-          keyFeatures: value,
-        });
-        break;
     }
   }
 
   return (
-    <Form>
+    <Form noValidate validated={validated} onSubmit={formSubmit}>
       <Form.Group>
         <Form.Label>
           Title <span className="text-danger">*</span>
@@ -113,6 +113,9 @@ function NewPropertyForm() {
           value={propertyFormState.title}
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Title is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -127,6 +130,9 @@ function NewPropertyForm() {
           value={propertyFormState.description}
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Description is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -141,6 +147,9 @@ function NewPropertyForm() {
           value={propertyFormState.shortDescription}
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Short description is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -155,6 +164,9 @@ function NewPropertyForm() {
           value={propertyFormState.address}
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Address is required
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group>
         <Form.Label>VR URL</Form.Label>
@@ -165,20 +177,6 @@ function NewPropertyForm() {
           value={propertyFormState.vrUrl}
         />
       </Form.Group>
-      <Form.Group className="mb-2">
-        <Form.Label>Key Features</Form.Label>
-        <Form.Control
-          onChange={handleInput}
-          type="text"
-          as="textarea"
-          name="keyFeatures"
-          value={propertyFormState.keyFeatures}
-          required
-        />
-        <Form.Text className="text-muted">
-          Enter features like so: feature1,feature2,feature3
-        </Form.Text>
-      </Form.Group>
       <Row>
         <Form.Group as={Col}>
           <Form.Label>
@@ -186,11 +184,14 @@ function NewPropertyForm() {
           </Form.Label>
           <Form.Control
             onChange={handleInput}
-            type="text"
+            type="number"
             name="price"
             value={propertyFormState.price}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Price is required
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col}>
           <Form.Label>
@@ -198,11 +199,14 @@ function NewPropertyForm() {
           </Form.Label>
           <Form.Control
             onChange={handleInput}
-            type="text"
+            type="number"
             name="deposit"
             value={propertyFormState.deposit}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Deposit is required
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
       <Row>
@@ -212,11 +216,14 @@ function NewPropertyForm() {
           </Form.Label>
           <Form.Control
             onChange={handleInput}
-            type="text"
+            type="number"
             name="bedroom"
             value={propertyFormState.bedroom}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Bedrooms is required
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col}>
@@ -225,19 +232,17 @@ function NewPropertyForm() {
           </Form.Label>
           <Form.Control
             onChange={handleInput}
-            type="text"
+            type="number"
             name="bathroom"
             value={propertyFormState.bathroom}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Bathrooms is required
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
-      <Button
-        className="mt-2 mb-2"
-        onClick={formSubmit}
-        variant="primary"
-        type="submit"
-      >
+      <Button className="mt-2 mb-2" variant="primary" type="submit">
         Save
       </Button>
       <div className="text-danger fst-italic">{validationMessage}</div>

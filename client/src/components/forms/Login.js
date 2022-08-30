@@ -2,12 +2,15 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../utils/actions";
 import Auth from "../../utils/auth";
+import { useStoreContext } from "../../utils/GlobalState";
 import { LOGIN_USER } from "../../utils/mutations";
 
 function Login() {
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [login, { error }] = useMutation(LOGIN_USER);
+  const [state, dispatch] = useStoreContext();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +32,11 @@ function Login() {
       [name]: value,
     });
   };
+
+  function openSignup(){
+    dispatch({type: SHOW_MODAL_LOGIN})
+    dispatch({type: SHOW_MODAL_SIGNUP})
+  }
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -54,6 +62,7 @@ function Login() {
       <Button variant="primary" type="submit">
         Login
       </Button>
+      <a className="ms-2" onClick={openSignup} href='#'>Don't have an account: Sign up</a>
       {error ? (
         <div>
           <p className="text-danger">The provided credentials are incorrect</p>

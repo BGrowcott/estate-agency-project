@@ -1,10 +1,8 @@
 import React from "react";
 import backgroundImage from "../images/birmingham-example-background.jpg";
 import Button from "react-bootstrap/esm/Button";
-import { useLazyQuery } from "@apollo/client";
-import { QUERY_CHECKOUT } from "../utils/queries";
-import { loadStripe } from "@stripe/stripe-js";
-import { useEffect } from "react";
+
+
 
 const styles = {
   backgroundImage: {
@@ -16,25 +14,7 @@ const styles = {
   },
 };
 
-const stripePromise = loadStripe(
-  "pk_test_51LQpgXEWzKi5CERlsoF4zBjJzcXPCpKOrcDQcrwbHYfo2PLsG31CGcqfyFSyGddvk0n1IQg5aN2zEL5DtVBluJx5005BvcbUXA"
-);
-
 const Home = () => {
-  const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
-
-  useEffect(() => {
-    if (data) {
-      stripePromise.then((res) => {
-        res.redirectToCheckout({ sessionId: data.checkout.session });
-      });
-    }
-  }, [data]);
-
-  function checkout() {
-    console.log("hello");
-    getCheckout();
-  }
 
   return (
     <main
@@ -55,9 +35,6 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <Button className="d-none" onClick={checkout} variant="primary">
-        Test
-      </Button>
     </main>
   );
 };

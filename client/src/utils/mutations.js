@@ -35,7 +35,6 @@ export const CREATE_PROPERTY = gql`
     $bedroom: Int!
     $bathroom: Int!
     $vrUrl: String
-    $keyFeatures: [String]
   ) {
     createProperty(
       title: $title
@@ -47,11 +46,9 @@ export const CREATE_PROPERTY = gql`
       bedroom: $bedroom
       bathroom: $bathroom
       vrUrl: $vrUrl
-      keyFeatures: $keyFeatures
     ) {
       modifiedAt
       createdAt
-      keyFeatures
       isAvailable
       bathroom
       bedroom
@@ -81,7 +78,6 @@ export const UPDATE_PROPERTY = gql`
     $bathroom: Int
     $vrUrl: String
     $isAvailable: Boolean
-    $keyFeatures: [String]
   ) {
     updateProperty(
       _id: $id
@@ -95,7 +91,6 @@ export const UPDATE_PROPERTY = gql`
       bathroom: $bathroom
       vrUrl: $vrUrl
       isAvailable: $isAvailable
-      keyFeatures: $keyFeatures
     ) {
       _id
       title
@@ -109,16 +104,82 @@ export const UPDATE_PROPERTY = gql`
       bedroom
       bathroom
       isAvailable
-      keyFeatures
       createdAt
       modifiedAt
     }
   }
 `;
 
+export const UPDATE_USER = gql`
+  mutation updateUser(
+    $id: ID!
+    $username: String
+    $email: String
+    $title: String
+    $dob: String
+    $passportNumber: String
+    $phone: String
+    $weChat: String
+    $school: String
+    $specialty: String
+    $emergencyContactName: String
+    $emergencyContactNumber: String
+    $emergencyContactAddress: String
+    $otherInformation: String
+  ) {
+    updateUser(
+      _id: $id
+      username: $username
+      email: $email
+      title: $title
+      dob: $dob
+      passportNumber: $passportNumber
+      phone: $phone
+      weChat: $weChat
+      school: $school
+      specialty: $specialty
+      emergencyContactName: $emergencyContactName
+      emergencyContactNumber: $emergencyContactNumber
+      emergencyContactAddress: $emergencyContactAddress
+      otherInformation: $otherInformation
+    ) {
+      username
+      email
+      _id
+      password
+      title
+      passportNumber
+      dob
+      phone
+      weChat
+      school
+      specialty
+      emergencyContactName
+      emergencyContactNumber
+      emergencyContactAddress
+      otherInformation
+      properties {
+        _id
+        title
+        deposit
+      }
+    }
+  }
+`;
+
 export const IMAGE_UPLOAD = gql`
-  mutation imageUpload($imageFile: String, $fileName: String, $fileExtension: String, $propertyId: ID) {
-    uploadImage(imageFile: $imageFile, fileName: $fileName, fileExtension: $fileExtension, propertyId: $propertyId) {
+  mutation imageUpload(
+    $imageFile: String
+    $fileName: String
+    $fileExtension: String
+    $propertyId: ID
+  ) {
+    uploadImage(
+      imageFile: $imageFile
+      fileName: $fileName
+      fileExtension: $fileExtension
+      propertyId: $propertyId
+    ) {
       imageUrl
     }
   }

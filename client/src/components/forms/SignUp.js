@@ -4,10 +4,13 @@ import Form from "react-bootstrap/Form";
 import Auth from "../../utils/auth";
 import { ADD_USER } from "../../utils/mutations";
 import { useMutation } from "@apollo/client";
+import { useStoreContext } from "../../utils/GlobalState";
+import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from "../../utils/actions";
 
 function Signup() {
   const [formState, setFormState] = useState({ email: "", password: "", username: "" });
   const [addUser] = useMutation(ADD_USER);
+  const [state, dispatch] = useStoreContext();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +32,11 @@ function Signup() {
       [name]: value,
     });
   };
+
+  function openLogin(){
+    dispatch({type: SHOW_MODAL_LOGIN})
+    dispatch({type: SHOW_MODAL_SIGNUP})
+  }
 
   return (
     <Form onSubmit={handleFormSubmit}>
@@ -53,6 +61,7 @@ function Signup() {
       <Button variant="primary" type="submit">
         Signup
       </Button>
+      <a className="ms-2" onClick={openLogin} href='#'>Already have an account</a>
     </Form>
   );
 }

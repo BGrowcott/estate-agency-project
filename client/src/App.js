@@ -19,6 +19,8 @@ import ModalLogin from "./components/modals/ModalLogin";
 import Content from "./pages/Content";
 import PropertyView from "./pages/PropertyView";
 import ModalContacts from "./components/modals/ModalContacts";
+import UserPage from "./pages/UserPage";
+import ReserveProperty from "./pages/ReserveProperty";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -67,6 +69,8 @@ function App() {
             <Route path="/content" element={<Content />} />
             {adminPage()}
             <Route path="/property/:id" element={<PropertyView/>}/>
+            <Route path="/myhizoom" element={<UserPage/>}/>
+            <Route path="/reserveproperty/:propertyId" element={<ReserveProperty/>}/>
             <Route path="*" element={<Home />} />
           </Routes>
           <Footer />

@@ -4,8 +4,10 @@ import {
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_SIGNUP,
   SHOW_MODAL_UPDATE,
+  SHOW_MODAL_UPDATE_USER,
   SHOW_MODAL_CONTACTS,
   SELECTED_UPDATE_PROPERTY,
+  DOB,
 } from "./actions";
 
 // The reducer is a function that accepts the current state and an action. It returns a new state based on that action.
@@ -26,6 +28,11 @@ export const reducer = (state, action) => {
         ...state,
         setShowUpdateModal: !state.setShowUpdateModal,
       };
+    case SHOW_MODAL_UPDATE_USER:
+      return {
+        ...state,
+        setShowUpdateUserModal: !state.setShowUpdateUserModal,
+      };
     case SHOW_MODAL_CONTACTS:
       return {
         ...state,
@@ -36,11 +43,16 @@ export const reducer = (state, action) => {
         ...state,
         propertyView: [...action.propertyView],
       };
-      case SELECTED_UPDATE_PROPERTY:
-        return {
-          ...state,
-          selectedUpdateProperty: action.property
-        }
+    case SELECTED_UPDATE_PROPERTY:
+      return {
+        ...state,
+        selectedUpdateProperty: action.property,
+      };
+    case DOB:
+      return {
+        ...state,
+        dob: action.selectedDob,
+      };
     // Return the state as is in the event that the `action.type` passed to our reducer was not accounted for by the developers
     // This saves us from a crash.
     default:

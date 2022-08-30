@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -19,10 +19,9 @@ function UpdatePropertyForm() {
     bedroom: "",
     bathroom: "",
     vrUrl: "",
-    keyFeatures: "",
     isAvailable: "",
   };
-
+  const [validated, setValidated] = useState(false);
   const [state, dispatch] = useStoreContext();
   const [propertyFormState, setPropertyFormState] = useState({
     ...emptyForm,
@@ -36,10 +35,16 @@ function UpdatePropertyForm() {
 
   function formSubmit(e) {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      return;
+    }
     try {
       propertyFormState.id = propertyFormState._id;
-      propertyFormState.isAvailable = propertyFormState.isAvailable === "true" || propertyFormState.isAvailable === true
-      propertyFormState.keyFeatures = propertyFormState.keyFeatures.split(',')
+      propertyFormState.isAvailable =
+        propertyFormState.isAvailable === "true" ||
+        propertyFormState.isAvailable === true;
       updateProperty({
         variables: { ...propertyFormState },
       }).then((data) => {
@@ -83,12 +88,6 @@ function UpdatePropertyForm() {
       case "vrUrl":
         setPropertyFormState({ ...propertyFormState, vrUrl: value });
         break;
-      case "keyFeatures":
-        setPropertyFormState({
-          ...propertyFormState,
-          keyFeatures: value,
-        });
-        break;
       case "isAvailable":
         console.log(value);
         setPropertyFormState({
@@ -100,7 +99,7 @@ function UpdatePropertyForm() {
   }
 
   return (
-    <Form>
+    <Form onSubmit={formSubmit}>
       <Form.Group>
         <Form.Label>
           Title <span className="text-danger">*</span>
@@ -110,7 +109,11 @@ function UpdatePropertyForm() {
           type="text"
           name="title"
           value={propertyFormState.title}
+          required
         />
+        <Form.Control.Feedback type="invalid">
+          Title is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -123,7 +126,11 @@ function UpdatePropertyForm() {
           as="textarea"
           name="description"
           value={propertyFormState.description}
+          required
         />
+        <Form.Control.Feedback type="invalid">
+          Description is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -136,7 +143,11 @@ function UpdatePropertyForm() {
           as="textarea"
           name="shortDescription"
           value={propertyFormState.shortDescription}
+          required
         />
+        <Form.Control.Feedback type="invalid">
+          Short description is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -149,7 +160,11 @@ function UpdatePropertyForm() {
           as="textarea"
           name="address"
           value={propertyFormState.address}
+          required
         />
+        <Form.Control.Feedback type="invalid">
+          Address is required
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
@@ -162,20 +177,6 @@ function UpdatePropertyForm() {
         />
       </Form.Group>
 
-      <Form.Group className="mb-2">
-        <Form.Label>Key Features</Form.Label>
-        <Form.Control
-          onChange={handleInput}
-          type="text"
-          as="textarea"
-          name="keyFeatures"
-          value={propertyFormState.keyFeatures}
-        />
-        <Form.Text className="text-muted">
-          Enter features like so: feature1,feature2,feature3
-        </Form.Text>
-      </Form.Group>
-
       <Row>
         <Form.Group as={Col}>
           <Form.Label>
@@ -186,7 +187,11 @@ function UpdatePropertyForm() {
             type="text"
             name="price"
             value={propertyFormState.price}
+            required
           />
+          <Form.Control.Feedback type="invalid">
+            Price is required
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col}>
@@ -198,7 +203,11 @@ function UpdatePropertyForm() {
             type="text"
             name="deposit"
             value={propertyFormState.deposit}
+            required
           />
+          <Form.Control.Feedback type="invalid">
+            Deposit is required
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
       <Row>
@@ -211,7 +220,11 @@ function UpdatePropertyForm() {
             type="text"
             name="bedroom"
             value={propertyFormState.bedroom}
+            required
           />
+          <Form.Control.Feedback type="invalid">
+            Bedrooms is required
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group as={Col}>
@@ -223,32 +236,41 @@ function UpdatePropertyForm() {
             type="text"
             name="bathroom"
             value={propertyFormState.bathroom}
+            required
           />
+          <Form.Control.Feedback type="invalid">
+            Bathrooms is required
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
-        <Form.Check
-          inline
-          onChange={handleInput}
-          type="radio"
-          label="Property Available"
-          name="isAvailable"
-          id="isAvailableTrue"
-          value={true}
-          checked={propertyFormState.isAvailable === "true" || propertyFormState.isAvailable === true}
-        />
-        <Form.Check
-          inline
-          onChange={handleInput}
-          type="radio"
-          label="Property not Available"
-          name="isAvailable"
-          id="isAvailableFalse"
-          value={false}
-          checked={propertyFormState.isAvailable === "false" || propertyFormState.isAvailable === false}
-        />
+      <Form.Check
+        inline
+        onChange={handleInput}
+        type="radio"
+        label="Property Available"
+        name="isAvailable"
+        id="isAvailableTrue"
+        value={true}
+        checked={
+          propertyFormState.isAvailable === "true" ||
+          propertyFormState.isAvailable === true
+        }
+      />
+      <Form.Check
+        inline
+        onChange={handleInput}
+        type="radio"
+        label="Property not Available"
+        name="isAvailable"
+        id="isAvailableFalse"
+        value={false}
+        checked={
+          propertyFormState.isAvailable === "false" ||
+          propertyFormState.isAvailable === false
+        }
+      />
       <Button
         className="mt-2 mb-2"
-        onClick={formSubmit}
         variant="primary"
         type="submit"
       >

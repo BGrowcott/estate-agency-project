@@ -1,12 +1,9 @@
 import React from "react";
-import placeholder from "../../images/placeholder.jpg";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ImageCarousel from "../carousel/ImageCarousel";
 
 function ProductCard({ content }) {
-  const imageArray = [placeholder, placeholder, placeholder];
-
   return (
     <div>
       <div className="m-2 mt-3 mb-3 row p-2 rounded bg-light shadow-custom">

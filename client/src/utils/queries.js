@@ -20,7 +20,6 @@ query allProperties {
     price
     bedroom
     bathroom
-    keyFeatures
     shortDescription
     deposit
     imageUrl
@@ -40,7 +39,6 @@ query singleProperty($id: ID!) {
     price
     bedroom
     bathroom
-    keyFeatures
     shortDescription
     deposit
     imageUrl
@@ -51,18 +49,35 @@ query singleProperty($id: ID!) {
 `
 
 export const QUERY_ME = gql`
-  query me {
-    me {
+query userDetail {
+  me {
+    _id
+    username
+    email
+    title
+    dob
+    passportNumber
+    phone
+    weChat
+    school
+    specialty
+    emergencyContactName
+    emergencyContactNumber
+    emergencyContactAddress
+    otherInformation
+    properties {
       _id
-      username
-      email
+      title
+      address
+      deposit
     }
   }
+}
 `;
 
 export const QUERY_CHECKOUT = gql`
-  query Checkout {
-    checkout {
+  query Checkout($address: String!, $deposit: Float!) {
+    checkout(address: $address, deposit: $deposit) {
       session
     }
   }
