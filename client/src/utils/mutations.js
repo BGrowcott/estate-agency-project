@@ -110,6 +110,14 @@ export const UPDATE_PROPERTY = gql`
   }
 `;
 
+export const REMOVE_PROPERTY = gql`
+mutation removeProperty($propertyId: ID!) {
+  deleteProperty(propertyId: $propertyId) {
+    _id
+  }
+}
+`
+
 export const UPDATE_USER = gql`
   mutation updateUser(
     $id: ID!

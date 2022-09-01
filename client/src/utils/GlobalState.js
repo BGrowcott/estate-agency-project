@@ -11,6 +11,7 @@ const StoreProvider = ({ value = [], ...props }) => {
     setShowUpdateModal: false,
     setShowContactsModal: false,
     setShowUpdateUserModal: false,
+    setShowDeleteModal: false,
     propertyView: [],
     dob: '',
     selectedUpdateProperty: {}

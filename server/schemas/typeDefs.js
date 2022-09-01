@@ -86,6 +86,8 @@ const typeDefs = gql`
       isAvailable: Boolean
     ): Property
 
+    deleteProperty(propertyId: ID!): Property
+
     updateUser(
       _id: ID!
       username: String

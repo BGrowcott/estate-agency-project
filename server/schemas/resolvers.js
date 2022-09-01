@@ -40,7 +40,7 @@ const resolvers = {
       const url = new URL(context.headers.referer).origin;
 
       try {
-        const property = await Property.findById(propertyId)
+        const property = await Property.findById(propertyId);
         const session = await stripe.checkout.sessions.create({
           // payment_method_types: ["card"],
           line_items: [
@@ -180,6 +180,20 @@ const resolvers = {
       }
     },
 
+    deleteProperty: async (parent, { propertyId }, context) => {
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError(
+          `You need to be logged in as a administrator to perform this action`
+        );
+      }
+      try {
+        const property = await Property.findByIdAndDelete(propertyId);
+        return property;
+      } catch (err) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
+    },
+
     updateUser: async (
       parent,
       {
@@ -234,11 +248,15 @@ const resolvers = {
       }
     },
 
-    saveForLater: async (parent, {userId, propertyId}, context) => {
+    saveForLater: async (parent, { userId, propertyId }, context) => {
       try {
-        const user = await User.findByIdAndUpdate(userId, {
-          $addToSet: {properties: propertyId}
-        }, {new: true})
+        const user = await User.findByIdAndUpdate(
+          userId,
+          {
+            $addToSet: { properties: propertyId },
+          },
+          { new: true }
+        );
         user.save();
         return user;
       } catch (err) {

@@ -36,20 +36,6 @@ function NewPropertyForm() {
     }
 
     try {
-      // for (const [key, value] of Object.entries(propertyFormState)) {
-      //   if (key === "vrUrl") {
-      //     continue;
-      //   }
-      //   if (value === "") {
-      //     setValidationMessage(
-      //       `* ${
-      //         key.charAt(0).toUpperCase() + key.slice(1)
-      //       } is a required field`
-      //     );
-      //     return;
-      //   }
-      // }
-
       createProperty({
         variables: { ...propertyFormState },
       }).then((data) => {

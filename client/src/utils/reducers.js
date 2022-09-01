@@ -7,6 +7,7 @@ import {
   SHOW_MODAL_UPDATE_USER,
   SHOW_MODAL_CONTACTS,
   SELECTED_UPDATE_PROPERTY,
+  SHOW_MODAL_DELETE,
   DOB,
 } from "./actions";
 
@@ -37,6 +38,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         setShowContactsModal: !state.setShowContactsModal,
+      };
+    case SHOW_MODAL_DELETE:
+      return {
+        ...state,
+        setShowDeleteModal: !state.setShowDeleteModal,
       };
     case PROPERTY_VIEW:
       return {
