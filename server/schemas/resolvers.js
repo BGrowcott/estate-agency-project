@@ -18,12 +18,6 @@ var client = new OSS({
 
 const resolvers = {
   Query: {
-    base: async () => {
-      return Base.find({});
-    },
-    singleBase: async (parent, { _id }) => {
-      return Base.findById(_id);
-    },
     property: async (parent, { _id }) => {
       return Property.findById(_id);
     },
@@ -34,50 +28,32 @@ const resolvers = {
       return User.find();
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username });
+      return User.findOne({ username }).populate("properties");
     },
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return User.findOne({ _id: context.user._id }).populate("properties");
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    checkout: async (parent, args, context) => {
+    checkout: async (parent, { propertyId }, context) => {
       const url = new URL(context.headers.referer).origin;
-      // const order = new Order({ products: "testProduct" });
-      const line_items = [];
-
-      // const { products } = await order.populate('products');
-      // let product;
-      // let price;
-      // try {
-      //   product = await stripe.products.create({
-      //     name: "testProduct",
-      //     description: "testy",
-      //   });
-      // } catch (err) {
-      //   console.log(err);
-      // }
-      // try {
-      //   price = await stripe.prices.create({
-      //     product: product,
-      //     unit_amount: 100,
-      //     // currency: "usd",
-      //   });
-      // } catch (err) {
-      //   console.log(err);
-      // }
 
       try {
+        const property = await Property.findById(propertyId)
         const session = await stripe.checkout.sessions.create({
           // payment_method_types: ["card"],
           line_items: [
             {
-              name: "testProduct",
-              description: "this is a description",
-              amount: 1000,
+              price_data: {
+                currency: "gbp",
+                unit_amount: property.deposit * 100,
+                product_data: {
+                  name: property.address,
+                  description: "Security Deposit",
+                },
+              },
               quantity: 1,
-              currency: "cny",
             },
           ],
           mode: "payment",
@@ -116,15 +92,6 @@ const resolvers = {
       return { token, user };
     },
 
-    createBase: async (_parent, { name }) => {
-      try {
-        const newBase = await Base.create({ name });
-        return newBase;
-      } catch (err) {
-        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
-      }
-    },
-
     createProperty: async (
       parent,
       {
@@ -137,7 +104,6 @@ const resolvers = {
         bedroom,
         bathroom,
         vrUrl,
-        keyFeatures,
       },
       context
     ) => {
@@ -157,7 +123,6 @@ const resolvers = {
           bedroom,
           bathroom,
           vrUrl,
-          keyFeatures,
         });
         return newProperty;
       } catch (err) {
@@ -179,63 +144,143 @@ const resolvers = {
         bathroom,
         vrUrl,
         isAvailable,
-        keyFeatures,
       },
       context
     ) => {
-      const property = await Property.findByIdAndUpdate(
-        _id,
-        {
-          $set: {
-            title,
-            shortDescription,
-            description,
-            address,
-            price,
-            deposit,
-            bedroom,
-            bathroom,
-            vrUrl,
-            isAvailable,
-            keyFeatures,
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError(
+          `You need to be logged in as a administrator to perform this action`
+        );
+      }
+      try {
+        const property = await Property.findByIdAndUpdate(
+          _id,
+          {
+            $set: {
+              title,
+              shortDescription,
+              description,
+              address,
+              price,
+              deposit,
+              bedroom,
+              bathroom,
+              vrUrl,
+              isAvailable,
+            },
           },
-        },
-        {
-          new: true,
-        }
-      );
-      property.save();
-      return property;
+          {
+            new: true,
+          }
+        );
+        property.save();
+        return property;
+      } catch (err) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
+    },
+
+    updateUser: async (
+      parent,
+      {
+        _id,
+        username,
+        email,
+        title,
+        dob,
+        passportNumber,
+        phone,
+        weChat,
+        school,
+        specialty,
+        emergencyContactName,
+        emergencyContactNumber,
+        emergencyContactAddress,
+        otherInformation,
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError(
+          `You need to be logged in to perform this action`
+        );
+      }
+      try {
+        const user = await User.findByIdAndUpdate(
+          _id,
+          {
+            $set: {
+              username,
+              email,
+              title,
+              dob,
+              passportNumber,
+              phone,
+              weChat,
+              school,
+              specialty,
+              emergencyContactName,
+              emergencyContactNumber,
+              emergencyContactAddress,
+              otherInformation,
+            },
+          },
+          { new: true }
+        );
+        user.save();
+        return user;
+      } catch (err) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
+    },
+
+    saveForLater: async (parent, {userId, propertyId}, context) => {
+      try {
+        const user = await User.findByIdAndUpdate(userId, {
+          $addToSet: {properties: propertyId}
+        }, {new: true})
+        user.save();
+        return user;
+      } catch (err) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
     },
 
     uploadImage: async (
       parent,
-      { imageFile, fileName, fileExtension, propertyId }
+      { imageFile, fileName, fileExtension, propertyId },
+      context
     ) => {
-      try {
-      const buffer = Buffer.from(
-        imageFile.replace(/^data:image\/\w+;base64,/, ""),
-        "base64"
-      );
-      co(function* () {
-        const result = yield client.put(
-          `/hizoomNewProject/propertyImages/${fileName}.${fileExtension}`,
-          buffer
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError(
+          `You need to be logged in as a administrator to perform this action`
         );
-      });
-      const property = await Property.findByIdAndUpdate(
-        propertyId,
-        {
-          $addToSet: {
-            imageUrl: `${fileName}.${fileExtension}`,
+      }
+      try {
+        const buffer = Buffer.from(
+          imageFile.replace(/^data:image\/\w+;base64,/, ""),
+          "base64"
+        );
+        co(function* () {
+          const result = yield client.put(
+            `/hizoomNewProject/propertyImages/${fileName}.${fileExtension}`,
+            buffer
+          );
+        });
+        const property = await Property.findByIdAndUpdate(
+          propertyId,
+          {
+            $addToSet: {
+              imageUrl: `${fileName}.${fileExtension}`,
+            },
           },
-        },
-        { new: true }
-      );
-
-      property.save();
-      return property;
-      } catch (error) {console.log(error)}
+          { new: true }
+        );
+        property.save();
+        return property;
+      } catch (error) {
+        throw new AuthenticationError(`Whoops something went wrong: ${err}`);
+      }
     },
   },
 };

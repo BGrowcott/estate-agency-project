@@ -44,9 +44,6 @@ const propertySchema = new Schema(
             required: true,
             default: 1000
         },
-        keyFeatures: {
-            type: [String]
-        },
         availableFrom: {
             type: Date
         },

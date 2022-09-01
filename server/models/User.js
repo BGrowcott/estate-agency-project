@@ -18,13 +18,25 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 8,
     },
     role: {
       type: String,
       required: true,
       default: "customer"
-    }
+    },
+    title: String,
+    dob: String,
+    passportNumber: String,
+    phone: String,
+    weChat: String,
+    school: String,
+    specialty: String, 
+    emergencyContactName: String,
+    emergencyContactNumber: String,
+    emergencyContactAddress: String,
+    otherInformation: String,
+    properties: [{type: Schema.Types.ObjectId, ref: "property"}]
   },
   {
     timestamps: true,

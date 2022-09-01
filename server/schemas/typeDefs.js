@@ -6,6 +6,18 @@ const typeDefs = gql`
     username: String
     email: String
     password: String
+    title: String,
+    dob: String,
+    passportNumber: String,
+    phone: String,
+    weChat: String,
+    school: String,
+    specialty: String, 
+    emergencyContactName: String,
+    emergencyContactNumber: String,
+    emergencyContactAddress: String,
+    otherInformation: String,
+    properties: [Property]
   }
 
   type Property {
@@ -21,14 +33,8 @@ const typeDefs = gql`
     bedroom: Int
     bathroom: Int
     isAvailable: Boolean
-    keyFeatures: [String]
     createdAt: String
     modifiedAt: String
-  }
-
-  type Base {
-    _id: ID
-    name: String!
   }
 
   type Auth {
@@ -46,17 +52,13 @@ const typeDefs = gql`
     me: User
     property(_id: ID!): Property
     properties: [Property]
-    base: [Base]
-    singleBase(_id: ID!): Base
-    checkout: Checkout
+    checkout(propertyId: ID!): Checkout
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
 
     login(email: String!, password: String!): Auth
-
-    createBase(name: String!): Base
 
     createProperty(
       title: String!
@@ -68,7 +70,6 @@ const typeDefs = gql`
       bedroom: Int!
       bathroom: Int!
       vrUrl: String
-      keyFeatures: [String]
     ): Property
     
     updateProperty(
@@ -82,11 +83,29 @@ const typeDefs = gql`
       bedroom: Int
       bathroom: Int
       vrUrl: String
-      keyFeatures: [String]
       isAvailable: Boolean
     ): Property
 
+    updateUser(
+      _id: ID!
+      username: String
+      email: String
+      title: String
+      dob: String
+      passportNumber: String
+      phone: String
+      weChat: String
+      school: String
+      specialty: String
+      emergencyContactName: String
+      emergencyContactNumber: String
+      emergencyContactAddress: String
+      otherInformation: String
+    ): User
+
     uploadImage(imageFile: String, fileName: String, fileExtension: String, propertyId: ID): Property
+
+    saveForLater(userId: ID!, propertyId: ID!): User
   }
 `;
 
