@@ -76,8 +76,8 @@ query userDetail {
 `;
 
 export const QUERY_CHECKOUT = gql`
-  query Checkout($address: String!, $deposit: Float!) {
-    checkout(address: $address, deposit: $deposit) {
+  query Checkout($propertyId: ID!) {
+    checkout(propertyId: $propertyId) {
       session
     }
   }

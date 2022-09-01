@@ -21,7 +21,7 @@ function UpdateUserForm({ user: userDetails, reserving, property }) {
   const [state, dispatch] = useStoreContext();
 
   const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT, {
-    variables: { address: property?.address, deposit: property?.deposit },
+    variables: { propertyId: property?._id },
   });
   useEffect(() => {
     if (data) {
@@ -35,10 +35,11 @@ function UpdateUserForm({ user: userDetails, reserving, property }) {
     e.preventDefault();
     const updatedUser = { ...user, id: user._id };
     await updateUser({ variables: updatedUser });
-    // window.location.reload();
     if (reserving) {
       getCheckout();
-    } else { dispatch({type: SHOW_MODAL_UPDATE_USER})}
+    } else {
+      dispatch({ type: SHOW_MODAL_UPDATE_USER });
+    }
   }
 
   function handleInput(e) {
@@ -88,144 +89,148 @@ function UpdateUserForm({ user: userDetails, reserving, property }) {
 
   return (
     <Form onSubmit={submitForm}>
-      <Row>
-        <Form.Group as={Col}>
-          <Form.Label>Title</Form.Label>
-          <Form.Select
-            aria-label="Select title"
-            name="title"
-            value={user.title}
-            onChange={handleInput}
-          >
-            <option value="Mr">Mr</option>
-            <option value="Mrs">Mrs</option>
-            <option value="Ms">Ms</option>
-            <option value="Miss">Ms</option>
-          </Form.Select>
-        </Form.Group>
+      {userDetails ? (
+        <>
+          <Row>
+            <Form.Group as={Col}>
+              <Form.Label>Title</Form.Label>
+              <Form.Select
+                aria-label="Select title"
+                name="title"
+                value={user.title}
+                onChange={handleInput}
+              >
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+                <option value="Miss">Ms</option>
+              </Form.Select>
+            </Form.Group>
 
-        <Form.Group as={Col}>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-            value={user.username}
-            onChange={handleInput}
-          />
-        </Form.Group>
-      </Row>
-      <Row>
-        <Form.Group as={Col}>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={user.email}
-            onChange={handleInput}
-          />
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>Phone</Form.Label>
-          <Form.Control
-            type="text"
-            name="phone"
-            value={user.phone}
-            onChange={handleInput}
-          />
-        </Form.Group>
-      </Row>
-      <Form.Group>
-        <Form.Label>Wechat</Form.Label>
-        <Form.Control
-          type="text"
-          name="weChat"
-          value={user.weChat}
-          onChange={handleInput}
-        />
-      </Form.Group>
-      <Row>
-        <Form.Group as={Col}>
-          <Form.Label>Date of Birth</Form.Label>
-          <Form.Control
-            type="text"
-            name="dob"
-            value={user.dob}
-            onChange={handleInput}
-          />
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>Passport Number:</Form.Label>
-          <Form.Control
-            type="text"
-            name="passportNumber"
-            value={user.passportNumber}
-            onChange={handleInput}
-          />
-        </Form.Group>
-      </Row>
-      <Row>
-        <Form.Group as={Col}>
-          <Form.Label>School</Form.Label>
-          <Form.Control
-            type="text"
-            name="school"
-            value={user.school}
-            onChange={handleInput}
-          />
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>Area of Study</Form.Label>
-          <Form.Control
-            type="text"
-            name="specialty"
-            value={user.specialty}
-            onChange={handleInput}
-          />
-        </Form.Group>
-      </Row>
-      <Row>
-        <Form.Group as={Col}>
-          <Form.Label>Emergency Contact</Form.Label>
-          <Form.Control
-            type="text"
-            name="emergencyContactName"
-            value={user.emergencyContactName}
-            onChange={handleInput}
-          />
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>Emergency Contact Phone</Form.Label>
-          <Form.Control
-            type="text"
-            name="emergencyContactNumber"
-            value={user.emergencyContactNumber}
-            onChange={handleInput}
-          />
-        </Form.Group>
-      </Row>
-      <Form.Group>
-        <Form.Label>Emergency Contact Address</Form.Label>
-        <Form.Control
-          type="text"
-          as="textarea"
-          name="emergencyContactAddress"
-          value={user.emergencyContactAddress}
-          onChange={handleInput}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Other Information</Form.Label>
-        <Form.Control
-          type="text"
-          as="textarea"
-          name="otherInformation"
-          value={user.otherInformation}
-          onChange={handleInput}
-        />
-      </Form.Group>
-      <Button className="mt-1" variant="primary" type="submit" size="sm">
-        {reserving ? "Confirm" : "Save"}
-      </Button>
+            <Form.Group as={Col}>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                value={user.username}
+                onChange={handleInput}
+              />
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group as={Col}>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleInput}
+              />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="text"
+                name="phone"
+                value={user.phone}
+                onChange={handleInput}
+              />
+            </Form.Group>
+          </Row>
+          <Form.Group>
+            <Form.Label>Wechat</Form.Label>
+            <Form.Control
+              type="text"
+              name="weChat"
+              value={user.weChat}
+              onChange={handleInput}
+            />
+          </Form.Group>
+          <Row>
+            <Form.Group as={Col}>
+              <Form.Label>Date of Birth</Form.Label>
+              <Form.Control
+                type="text"
+                name="dob"
+                value={user.dob}
+                onChange={handleInput}
+              />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Passport Number:</Form.Label>
+              <Form.Control
+                type="text"
+                name="passportNumber"
+                value={user.passportNumber}
+                onChange={handleInput}
+              />
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group as={Col}>
+              <Form.Label>School</Form.Label>
+              <Form.Control
+                type="text"
+                name="school"
+                value={user.school}
+                onChange={handleInput}
+              />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Area of Study</Form.Label>
+              <Form.Control
+                type="text"
+                name="specialty"
+                value={user.specialty}
+                onChange={handleInput}
+              />
+            </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group as={Col}>
+              <Form.Label>Emergency Contact</Form.Label>
+              <Form.Control
+                type="text"
+                name="emergencyContactName"
+                value={user.emergencyContactName}
+                onChange={handleInput}
+              />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Emergency Contact Phone</Form.Label>
+              <Form.Control
+                type="text"
+                name="emergencyContactNumber"
+                value={user.emergencyContactNumber}
+                onChange={handleInput}
+              />
+            </Form.Group>
+          </Row>
+          <Form.Group>
+            <Form.Label>Emergency Contact Address</Form.Label>
+            <Form.Control
+              type="text"
+              as="textarea"
+              name="emergencyContactAddress"
+              value={user.emergencyContactAddress}
+              onChange={handleInput}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Other Information</Form.Label>
+            <Form.Control
+              type="text"
+              as="textarea"
+              name="otherInformation"
+              value={user.otherInformation}
+              onChange={handleInput}
+            />
+          </Form.Group>
+          <Button className="mt-1" variant="primary" type="submit" size="sm">
+            {reserving ? "Confirm" : "Save"}
+          </Button>
+        </>
+      ) : null}
     </Form>
   );
 }

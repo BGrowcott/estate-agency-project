@@ -8,22 +8,33 @@ import { QUERY_ME, QUERY_SINGLE_PROPERTY } from "../utils/queries";
 function ReserveProperty() {
   const { propertyId } = useParams();
   const { loading: loadUser, data: userData } = useQuery(QUERY_ME);
-  const { loading: loadProperty, data: propertyData } = useQuery(QUERY_SINGLE_PROPERTY, {
-    variables: { id: propertyId },
-  });
+  const { loading: loadProperty, data: propertyData } = useQuery(
+    QUERY_SINGLE_PROPERTY,
+    {
+      variables: { id: propertyId },
+    }
+  );
 
   const user = userData?.me || "";
   const property = propertyData?.property || "";
 
-  return <main>{loadUser && loadProperty ? <div>loading</div> : 
-    <section className="container">
-        <div>
+  return (
+    <main>
+      {loadUser && loadProperty ? (
+        <div>loading</div>
+      ) : (
+        <section className="container">
+          <div>
             <h2>Reserving Property</h2>
             <h3>{property.address}</h3>
-        </div>
-        <UpdateUserForm user={user} reserving={true} property={property}/>
-    </section>
-  }</main>;
+          </div>
+          {loadUser ? null : (
+            <UpdateUserForm user={user} reserving={true} property={property} />
+          )}
+        </section>
+      )}
+    </main>
+  );
 }
 
 export default ReserveProperty;

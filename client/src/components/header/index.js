@@ -19,7 +19,7 @@ const Header = () => {
   }
 
   function closeMenuDisplay() {
-    setTimeout(()=> {setMenuDisplay(false)}, 100);
+    setTimeout(()=> {setMenuDisplay(false)}, 300);
   }
 
   return (

@@ -31,7 +31,7 @@ const Content = () => {
   }
 
   return (
-    <main className="pe-3 ps-3">
+    <main className="container-lg">
       {loading ? (
         <div>loading</div>
       ) : (
