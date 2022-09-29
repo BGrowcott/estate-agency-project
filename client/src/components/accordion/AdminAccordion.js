@@ -105,6 +105,12 @@ function AdminAccordion({ properties }) {
             </table>
           </Accordion.Body>
         </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Find a User</Accordion.Header>
+          <Accordion.Body>
+            
+          </Accordion.Body>
+        </Accordion.Item>
       </Accordion>
       <ModalDeleteConfirm callback={removePropertyHandler} />
     </>

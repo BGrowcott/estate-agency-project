@@ -16,7 +16,7 @@ function Signup() {
     event.preventDefault();
     const mutationResponse = await addUser({
       variables: {
-        email: formState.email,
+        email: formState.email.toLocaleLowerCase(),
         password: formState.password,
         username: formState.username,
       },
@@ -41,7 +41,7 @@ function Signup() {
   return (
     <Form onSubmit={handleFormSubmit}>
       <Form.Group className="mb-3" controlId="formUsernameLogin">
-        <Form.Label>Username</Form.Label>
+        <Form.Label>Name</Form.Label>
         <Form.Control type="text" name="username" placeholder="Enter Username" onChange={handleChange}/>
       </Form.Group>
 

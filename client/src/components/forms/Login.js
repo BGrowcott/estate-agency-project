@@ -16,7 +16,7 @@ function Login() {
     event.preventDefault();
     try {
       const mutationResponse = await login({
-        variables: { email: formState.email, password: formState.password },
+        variables: { email: formState.email.toLocaleLowerCase(), password: formState.password },
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
@@ -62,7 +62,7 @@ function Login() {
       <Button variant="primary" type="submit">
         Login
       </Button>
-      <a className="ms-2" onClick={openSignup} href='#'>Don't have an account: Sign up</a>
+      <a className="ms-2" onClick={openSignup} href='#'>Sign up</a>
       {error ? (
         <div>
           <p className="text-danger">The provided credentials are incorrect</p>
