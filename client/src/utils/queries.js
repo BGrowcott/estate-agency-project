@@ -82,3 +82,24 @@ export const QUERY_CHECKOUT = gql`
     }
   }
 `;
+
+export const QUERY_USERS = gql`
+query Query {
+  users {
+    _id
+    username
+    email
+    title
+    dob
+    passportNumber
+    phone
+    weChat
+    properties {
+      _id
+      title
+      address
+    }
+    role
+  }
+}
+`

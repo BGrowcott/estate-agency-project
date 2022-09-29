@@ -18,6 +18,7 @@ const typeDefs = gql`
     emergencyContactAddress: String,
     otherInformation: String,
     properties: [Property]
+    role: String
   }
 
   type Property {

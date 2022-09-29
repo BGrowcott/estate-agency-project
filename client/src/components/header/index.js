@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logoMain from "../../images/logos/logo-secondary.png";
+import logoMain from "../../images/logos/logoEng.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./style.css";
